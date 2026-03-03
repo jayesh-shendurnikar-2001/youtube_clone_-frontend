@@ -1,14 +1,17 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
+import Header from "./components/Header";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  const toggleSidebar = () => {
+    setSidebarOpen((prev) => !prev);
+  };
 
   return (
-    <h1>hello</h1>
-  )
+    <Header onToggleSidebar={toggleSidebar} />
+  );
 }
 
-export default App
+export default App;
