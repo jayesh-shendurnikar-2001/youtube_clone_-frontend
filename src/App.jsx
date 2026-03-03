@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
+import Register from "./pages/Register";
+import { Route, Routes } from "react-router-dom";
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -20,7 +22,9 @@ function App() {
         <main
           className={`flex-1 p-4 transition-all duration-300
            ${sidebarOpen ? "lg:ml-60" : "lg:ml-16"}`}>
-            <h1>Main content</h1>
+            <Routes>
+            <Route path="/register" element={<Register />} />
+            </Routes>
         </main>
       </div>
     </div>

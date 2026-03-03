@@ -27,7 +27,7 @@ const Header = ({ onToggleSidebar }) => {
     <header className="fixed top-0 left-0 right-0 h-14 bg-black flex items-center justify-between px-3 border-b border-gray-700 z-50">
       {/* LEFT */}
       <div className="flex items-center gap-3">
-        <button onClick={onToggleSidebar} className="text-white text-xl">
+        <button onClick={onToggleSidebar} className="text-white text-xl cursor-pointer">
           <FiMenu />
         </button>
 
@@ -53,8 +53,9 @@ const Header = ({ onToggleSidebar }) => {
           />
           <button
             type="submit"
-            className="px-3 bg-gray-700 border
-         border-gray-700 rounded-r-full text-white"
+            className=" px-3 bg-gray-700 border border-gray-700 rounded-r-full 
+                text-white transition-all duration-200hover:bg-gray-600
+                active:scale-95 active:bg-gray-800 cursor-pointer"
           >
             <FiSearch />
           </button>
@@ -82,8 +83,10 @@ const Header = ({ onToggleSidebar }) => {
             </button>
 
             {showDropdown && (
-              <div className="absolute right-0 mt-2 w-44 bg-gray-800 border
-               border-gray-700 rounded-md shadow-lg">
+              <div
+                className="absolute right-0 mt-2 w-44 bg-gray-800 border
+               border-gray-700 rounded-md shadow-lg"
+              >
                 <Link
                   to={`/channel/${user.channels?.[0] || "create"}`}
                   onClick={() => setShowDropdown(false)}

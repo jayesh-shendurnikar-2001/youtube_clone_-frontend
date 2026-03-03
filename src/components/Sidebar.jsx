@@ -60,12 +60,12 @@ const Sidebar = ({ isOpen }) => {
             >
               <span className="text-xl">{item.icon}</span>
               {isOpen ? (
-    <span>{item.label}</span>
-  ) : (
-    <span className="text-[10px] text-gray-400 text-center mt-1">
-      {item.label}
-    </span>
-  )}
+                <span>{item.label}</span>
+              ) : (
+                <span className="text-[10px] text-gray-400 text-center mt-1">
+                  {item.label}
+                </span>
+              )}
             </Link>
           );
         })}
