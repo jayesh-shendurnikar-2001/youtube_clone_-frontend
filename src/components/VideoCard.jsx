@@ -1,0 +1,110 @@
+// src/components/VideoCard.jsx
+import { useNavigate } from "react-router-dom";
+
+const formatViews = (views) => {
+  if (views >= 1000000) return (views / 1000000).toFixed(1) + "M";
+  if (views >= 1000) return (views / 1000).toFixed(1) + "K";
+  return views.toString();
+};
+
+const formatTimeAgo = (dateStr) => {
+  const now = new Date();
+  const date = new Date(dateStr);
+  const diffMs = now - date;
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+  if (diffDays < 1) return "Today";
+  if (diffDays < 7)
+    return `${diffDays} day${diffDays > 1 ? "s" : ""} ago`;
+  if (diffDays < 30)
+    return `${Math.floor(diffDays / 7)} week${
+      Math.floor(diffDays / 7) > 1 ? "s" : ""
+    } ago`;
+  if (diffDays < 365)
+    return `${Math.floor(diffDays / 30)} month${
+      Math.floor(diffDays / 30) > 1 ? "s" : ""
+    } ago`;
+
+  return `${Math.floor(diffDays / 365)} year${
+    Math.floor(diffDays / 365) > 1 ? "s" : ""
+  } ago`;
+};
+
+const VideoCard = ({ video }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/video/${video._id}`);
+  };
+
+  const handleChannelClick = (e) => {
+    e.stopPropagation();
+    if (video.channel?._id) {
+      navigate(`/channel/${video.channel._id}`);
+    }
+  };
+
+  return (
+    <div
+      className="cursor-pointer rounded-lg overflow-hidden transition-transform duration-200 hover:-translate-y-1 group"
+      onClick={handleClick}
+    >
+      {/* Thumbnail */}
+      <div className="relative w-full aspect-video overflow-hidden rounded-lg bg-gray-800">
+        <img
+          src={video.thumbnailUrl}
+          alt={video.title}
+          loading="lazy"
+          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          onError={(e) => {
+            e.target.src =
+              "https://placehold.co/640x360/272727/aaa?text=No+Thumbnail";
+          }}
+        />
+      </div>
+
+      {/* Content */}
+      <div className="flex gap-3 pt-3 px-1 pb-1">
+        {/* Channel Avatar */}
+        <img
+          className="w-9 h-9 rounded-full flex-shrink-0 object-cover bg-gray-700"
+          src={
+            video.uploader?.avatar ||
+            `https://ui-avatars.com/api/?name=${
+              video.channel?.channelName || "C"
+            }&background=FF0000&color=fff&size=64`
+          }
+          alt={video.channel?.channelName}
+          onError={(e) => {
+            e.target.src =
+              "https://ui-avatars.com/api/?name=C&background=333&color=fff&size=64";
+          }}
+        />
+
+        <div className="flex-1 min-w-0">
+          {/* Title */}
+          <h3 className="text-sm font-medium leading-snug text-white line-clamp-2 mb-1">
+            {video.title}
+          </h3>
+
+          {/* Channel Name */}
+          <div
+            className="text-xs text-gray-400 hover:text-white transition"
+            onClick={handleChannelClick}
+          >
+            {video.channel?.channelName || "Unknown Channel"}
+          </div>
+
+          {/* Views & Time */}
+          <div className="text-xs text-gray-400 flex gap-2">
+            <span>{formatViews(video.views)} views</span>
+            <span>•</span>
+            <span>{formatTimeAgo(video.createdAt)}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default VideoCard;
