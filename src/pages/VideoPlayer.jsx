@@ -31,6 +31,10 @@ const VideoPlayer = () => {
   const [userLiked, setUserLiked] = useState(false);
   const [userDisliked, setUserDisliked] = useState(false);
 
+  const [expanded, setExpanded] = useState(false);
+
+
+
   useEffect(() => {
     const fetchVideo = async () => {
       try {
@@ -53,24 +57,20 @@ const VideoPlayer = () => {
     };
 
     const fetchSuggestions = async () => {
-        try {
-          const { data } = await API.get("/videos");
-      
-          console.log("Suggestions response:", data);
-      
-          const videosArray = Array.isArray(data.videos)
-            ? data.videos
-            : [];
-      
-          const filtered = videosArray
-            .filter((v) => v._id !== id)
-            .slice(0, 8);
-      
-          setSuggestions(filtered);
-        } catch (err) {
-          console.error("Failed to fetch suggestions:", err);
-        }
-      };
+      try {
+        const { data } = await API.get("/videos");
+
+        console.log("Suggestions response:", data);
+
+        const videosArray = Array.isArray(data.videos) ? data.videos : [];
+
+        const filtered = videosArray.filter((v) => v._id !== id).slice(0, 8);
+
+        setSuggestions(filtered);
+      } catch (err) {
+        console.error("Failed to fetch suggestions:", err);
+      }
+    };
 
     if (id) {
       fetchVideo();
@@ -109,7 +109,8 @@ const VideoPlayer = () => {
       <div className="text-center py-20 text-gray-400">Video not found</div>
     );
   }
-
+  const description = video.description || "No description available.";
+  
   return (
     <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_350px] gap-6 px-4 py-4">
       {/* Left Section */}
@@ -181,13 +182,25 @@ const VideoPlayer = () => {
         </div>
 
         {/* Description */}
+
+        
+
         <div className="mt-4 bg-gray-800 p-4 rounded-lg">
           <div className="text-sm font-medium text-white mb-2">
             {formatViews(video.views)} views •{" "}
             {new Date(video.createdAt).toLocaleDateString()}
           </div>
           <p className="text-sm text-gray-300 whitespace-pre-wrap">
-            {video.description || "No description available."}
+            {expanded ? description : description.slice(0, 120)}
+
+            {description.length > 120 && (
+              <button
+                onClick={() => setExpanded(!expanded)}
+                className="ml-2 text-blue-400 hover:underline"
+              >
+                {expanded ? "Show less" : "Show more"}
+              </button>
+            )}
           </p>
         </div>
 

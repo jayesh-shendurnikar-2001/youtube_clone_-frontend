@@ -88,106 +88,147 @@ const CreateEditVideo = () => {
     };
 
     return (
-        <div className="max-w-[700px] mx-auto p-6" id="create-edit-video-page">
-            <h1 className="text-2xl font-semibold mb-8 text-yt-text-primary">{isEditing ? 'Edit Video' : 'Upload Video'}</h1>
+        <div className="max-w-2xl mx-auto p-6">
 
-            {error && <div className="bg-yt-error/10 border border-yt-error rounded-md-yt p-3 text-center text-yt-error text-sm mb-4">{error}</div>}
+  <h1 className="text-2xl font-semibold mb-8 text-white">
+    {isEditing ? "Edit Video" : "Upload Video"}
+  </h1>
 
-            <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
-                <div className="flex flex-col gap-1.5">
-                    <label htmlFor="title" className="text-sm font-medium text-yt-text-secondary">Title <span className="text-yt-error">*</span></label>
-                    <input
-                        type="text"
-                        id="title"
-                        name="title"
-                        placeholder="Enter video title"
-                        value={formData.title}
-                        onChange={handleChange}
-                        className="w-full px-4 py-3 bg-yt-bg-tertiary border border-yt-border rounded-md-yt text-yt-text-primary text-[0.95rem] focus:border-yt-blue transition-colors duration-fast"
-                    />
-                </div>
+  {error && (
+    <div className="bg-red-500/10 border border-red-500 rounded p-3 text-center text-red-500 text-sm mb-4">
+      {error}
+    </div>
+  )}
 
-                <div className="flex flex-col gap-1.5">
-                    <label htmlFor="description" className="text-sm font-medium text-yt-text-secondary">Description</label>
-                    <textarea
-                        id="description"
-                        name="description"
-                        placeholder="Tell viewers about your video"
-                        value={formData.description}
-                        onChange={handleChange}
-                        className="w-full px-4 py-3 bg-yt-bg-tertiary border border-yt-border rounded-md-yt text-yt-text-primary text-[0.95rem] min-h-[100px] resize-y focus:border-yt-blue transition-colors duration-fast"
-                    />
-                </div>
+  <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
 
-                <div className="flex flex-col gap-1.5">
-                    <label htmlFor="videoUrl" className="text-sm font-medium text-yt-text-secondary">Video URL <span className="text-yt-error">*</span></label>
-                    <input
-                        type="text"
-                        id="videoUrl"
-                        name="videoUrl"
-                        placeholder="e.g. https://www.youtube.com/embed/dQw4w9WgXcQ"
-                        value={formData.videoUrl}
-                        onChange={handleChange}
-                        className="w-full px-4 py-3 bg-yt-bg-tertiary border border-yt-border rounded-md-yt text-yt-text-primary text-[0.95rem] focus:border-yt-blue transition-colors duration-fast"
-                    />
-                    <span className="text-xs text-yt-text-muted mt-1">Use a YouTube embed URL (e.g. https://www.youtube.com/embed/VIDEO_ID)</span>
-                </div>
+    {/* Title */}
+    <div className="flex flex-col gap-2">
+      <label className="text-sm font-medium text-gray-300">
+        Title <span className="text-red-500">*</span>
+      </label>
 
-                <div className="flex flex-col gap-1.5">
-                    <label htmlFor="thumbnailUrl" className="text-sm font-medium text-yt-text-secondary">Thumbnail URL <span className="text-yt-error">*</span></label>
-                    <input
-                        type="text"
-                        id="thumbnailUrl"
-                        name="thumbnailUrl"
-                        placeholder="e.g. https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg"
-                        value={formData.thumbnailUrl}
-                        onChange={handleChange}
-                        className="w-full px-4 py-3 bg-yt-bg-tertiary border border-yt-border rounded-md-yt text-yt-text-primary text-[0.95rem] focus:border-yt-blue transition-colors duration-fast"
-                    />
-                    <span className="text-xs text-yt-text-muted mt-1">Use a direct image URL for the video thumbnail</span>
-                    {formData.thumbnailUrl && (
-                        <div className="mt-2 w-[200px] aspect-video rounded-md-yt overflow-hidden bg-yt-bg-tertiary">
-                            <img
-                                src={formData.thumbnailUrl}
-                                alt="Thumbnail preview"
-                                className="w-full h-full object-cover"
-                                onError={(e) => { e.target.style.display = 'none'; }}
-                            />
-                        </div>
-                    )}
-                </div>
+      <input
+        type="text"
+        name="title"
+        placeholder="Enter video title"
+        value={formData.title}
+        onChange={handleChange}
+        className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded text-white focus:border-blue-500 outline-none"
+      />
+    </div>
 
-                <div className="flex flex-col gap-1.5">
-                    <label htmlFor="category" className="text-sm font-medium text-yt-text-secondary">Category <span className="text-yt-error">*</span></label>
-                    <select
-                        id="category"
-                        name="category"
-                        value={formData.category}
-                        onChange={handleChange}
-                        className="w-full px-4 py-3 bg-yt-bg-tertiary border border-yt-border rounded-md-yt text-yt-text-primary text-[0.95rem] cursor-pointer appearance-auto focus:border-yt-blue transition-colors duration-fast [&>option]:bg-yt-bg-tertiary [&>option]:text-yt-text-primary"
-                    >
-                        {categories.map((cat) => (
-                            <option key={cat} value={cat}>
-                                {cat}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+    {/* Description */}
+    <div className="flex flex-col gap-2">
+      <label className="text-sm font-medium text-gray-300">
+        Description
+      </label>
 
-                <div className="flex gap-3 justify-end pt-3">
-                    <button
-                        type="button"
-                        className="px-6 py-3 rounded-md-yt text-[0.95rem] font-medium text-yt-text-primary hover:bg-yt-bg-hover transition-colors duration-fast"
-                        onClick={() => navigate(`/channel/${channelId}`)}
-                    >
-                        Cancel
-                    </button>
-                    <button type="submit" className="px-6 py-3 bg-yt-blue text-yt-bg-primary rounded-md-yt text-[0.95rem] font-semibold hover:bg-yt-blue-hover transition-colors duration-fast disabled:opacity-50 disabled:cursor-not-allowed" disabled={loading} id="save-video-btn">
-                        {loading ? 'Saving...' : isEditing ? 'Save Changes' : 'Upload Video'}
-                    </button>
-                </div>
-            </form>
+      <textarea
+        name="description"
+        placeholder="Tell viewers about your video"
+        value={formData.description}
+        onChange={handleChange}
+        className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded text-white min-h-[100px] focus:border-blue-500 outline-none"
+      />
+    </div>
+
+    {/* Video URL */}
+    <div className="flex flex-col gap-2">
+      <label className="text-sm font-medium text-gray-300">
+        Video URL <span className="text-red-500">*</span>
+      </label>
+
+      <input
+        type="text"
+        name="videoUrl"
+        placeholder="https://www.youtube.com/embed/VIDEO_ID"
+        value={formData.videoUrl}
+        onChange={handleChange}
+        className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded text-white focus:border-blue-500 outline-none"
+      />
+
+      <span className="text-xs text-gray-400">
+        Use a YouTube embed URL (example: https://www.youtube.com/embed/VIDEO_ID)
+      </span>
+    </div>
+
+    {/* Thumbnail */}
+    <div className="flex flex-col gap-2">
+      <label className="text-sm font-medium text-gray-300">
+        Thumbnail URL <span className="text-red-500">*</span>
+      </label>
+
+      <input
+        type="text"
+        name="thumbnailUrl"
+        placeholder="https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg"
+        value={formData.thumbnailUrl}
+        onChange={handleChange}
+        className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded text-white focus:border-blue-500 outline-none"
+      />
+
+      <span className="text-xs text-gray-400">
+        Use a direct image URL for the thumbnail
+      </span>
+
+      {formData.thumbnailUrl && (
+        <div className="mt-2 w-52 aspect-video rounded overflow-hidden bg-gray-800">
+          <img
+            src={formData.thumbnailUrl}
+            alt="Thumbnail preview"
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              e.target.style.display = "none";
+            }}
+          />
         </div>
+      )}
+    </div>
+
+    {/* Category */}
+    <div className="flex flex-col gap-2">
+      <label className="text-sm font-medium text-gray-300">
+        Category <span className="text-red-500">*</span>
+      </label>
+
+      <select
+        name="category"
+        value={formData.category}
+        onChange={handleChange}
+        className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded text-white focus:border-blue-500 outline-none"
+      >
+        {categories.map((cat) => (
+          <option key={cat} value={cat}>
+            {cat}
+          </option>
+        ))}
+      </select>
+    </div>
+
+    {/* Buttons */}
+    <div className="flex gap-3 justify-end pt-3">
+
+      <button
+        type="button"
+        onClick={() => navigate(`/channel/${channelId}`)}
+        className="px-6 py-3 rounded text-white hover:bg-gray-700"
+      >
+        Cancel
+      </button>
+
+      <button
+        type="submit"
+        disabled={loading}
+        className="px-6 py-3 bg-blue-600 text-white rounded font-semibold hover:bg-blue-700 disabled:opacity-50"
+      >
+        {loading ? "Saving..." : isEditing ? "Save Changes" : "Upload Video"}
+      </button>
+
+    </div>
+
+  </form>
+</div>
     );
 };
 
