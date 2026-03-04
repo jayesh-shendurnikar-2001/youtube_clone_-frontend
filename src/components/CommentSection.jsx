@@ -1,4 +1,48 @@
+import { useState } from "react";
+
 const CommentSection = () => {
+    const [comments, setComments] = useState([
+        {
+          _id: "1",
+          text: "Amazing video 🔥",
+          createdAt: new Date(),
+          user: {
+            username: "Jayesh",
+            avatar: "",
+          },
+        },
+        {
+          _id: "2",
+          text: "Very helpful content",
+          createdAt: new Date(),
+          user: {
+            username: "DevUser",
+            avatar: "",
+          },
+        },
+      ]);
+
+      {comments.map((comment) => (
+        <div key={comment._id} className="flex gap-3 mb-4">
+          <img
+            className="w-10 h-10 rounded-full"
+            src={
+              comment.user.avatar ||
+              `https://ui-avatars.com/api/?name=${comment.user.username}`
+            }
+            alt={comment.user.username}
+          />
+          <div>
+            <p className="text-sm text-white font-medium">
+              @{comment.user.username}
+            </p>
+            <p className="text-sm text-gray-400">
+              {comment.text}
+            </p>
+          </div>
+        </div>
+      ))}
+
     return (
       <div className="mt-6">
         <h3 className="text-lg font-semibold mb-6 text-white">
@@ -38,3 +82,5 @@ const CommentSection = () => {
       </div>
     );
   };
+
+export default CommentSection
