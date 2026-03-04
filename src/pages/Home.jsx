@@ -18,7 +18,9 @@ const Home = () => {
       try {
         setLoading(true);
         const params = {};
+        
         if (searchQuery) params.search = searchQuery;
+
         if (activeCategory && activeCategory !== "All")
           params.category = activeCategory;
 

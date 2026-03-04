@@ -1,0 +1,230 @@
+// src/pages/VideoPlayer.jsx
+
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import API from "../api/api.js";
+import CommentSection from "../components/CommentSection.jsx";
+import {
+  AiOutlineLike,
+  AiFillLike,
+  AiOutlineDislike,
+  AiFillDislike,
+} from "react-icons/ai";
+import { useAuth } from "../context/authContext.jsx";
+
+const formatViews = (views) => {
+  if (views >= 1000000) return (views / 1000000).toFixed(1) + "M";
+  if (views >= 1000) return (views / 1000).toFixed(1) + "K";
+  return views?.toString() || "0";
+};
+
+const VideoPlayer = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const [video, setVideo] = useState(null);
+  const [suggestions, setSuggestions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [likes, setLikes] = useState(0);
+  const [dislikes, setDislikes] = useState(0);
+  const [userLiked, setUserLiked] = useState(false);
+  const [userDisliked, setUserDisliked] = useState(false);
+
+  useEffect(() => {
+    const fetchVideo = async () => {
+      try {
+        setLoading(true);
+        const { data } = await API.get(`/videos/${id}`);
+        setVideo(data);
+        console.log(data);
+        setLikes(data.likes?.length || 0);
+        setDislikes(data.dislikes?.length || 0);
+
+        if (user) {
+          setUserLiked(data.likes?.includes(user._id));
+          setUserDisliked(data.dislikes?.includes(user._id));
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const fetchSuggestions = async () => {
+        try {
+          const { data } = await API.get("/videos");
+      
+          console.log("Suggestions response:", data);
+      
+          const videosArray = Array.isArray(data.videos)
+            ? data.videos
+            : [];
+      
+          const filtered = videosArray
+            .filter((v) => v._id !== id)
+            .slice(0, 8);
+      
+          setSuggestions(filtered);
+        } catch (err) {
+          console.error("Failed to fetch suggestions:", err);
+        }
+      };
+
+    if (id) {
+      fetchVideo();
+      fetchSuggestions();
+    }
+  }, [id, user]);
+
+  const handleLike = async () => {
+    if (!user) return navigate("/login");
+    const { data } = await API.put(`/videos/${id}/like`);
+    setLikes(data.likes);
+    setDislikes(data.dislikes);
+    setUserLiked(data.likes_list?.includes(user._id));
+    setUserDisliked(data.dislikes_list?.includes(user._id));
+  };
+
+  const handleDislike = async () => {
+    if (!user) return navigate("/login");
+    const { data } = await API.put(`/videos/${id}/dislike`);
+    setLikes(data.likes);
+    setDislikes(data.dislikes);
+    setUserLiked(data.likes_list?.includes(user._id));
+    setUserDisliked(data.dislikes_list?.includes(user._id));
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[200px]">
+        <div className="w-10 h-10 border-4 border-gray-700 border-t-red-600 rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  if (!video) {
+    return (
+      <div className="text-center py-20 text-gray-400">Video not found</div>
+    );
+  }
+
+  return (
+    <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_350px] gap-6 px-4 py-4">
+      {/* Left Section */}
+      <div>
+        {/* Video */}
+        <div className="aspect-video bg-black rounded-lg overflow-hidden">
+          <iframe
+            src={video.videoUrl}
+            title={video.title}
+            allowFullScreen
+            className="w-full h-full"
+          ></iframe>
+        </div>
+
+        {/* Title */}
+        <h1 className="text-xl font-semibold text-white mt-4">{video.title}</h1>
+
+        {/* Channel + Like */}
+        <div className="flex justify-between items-center mt-4 border-b border-gray-700 pb-4 flex-wrap gap-3">
+          {/* Channel */}
+          <div className="flex items-center gap-3">
+            <img
+              src={
+                video.uploader?.avatar ||
+                `https://ui-avatars.com/api/?name=${video.channel?.channelName}`
+              }
+              className="w-10 h-10 rounded-full object-cover cursor-pointer"
+              onClick={() => navigate(`/channel/${video.channel?._id}`)}
+            />
+            <div>
+              <div
+                className="text-white font-medium cursor-pointer"
+                onClick={() => navigate(`/channel/${video.channel?._id}`)}
+              >
+                {video.channel?.channelName}
+              </div>
+              <div className="text-sm text-gray-400">
+                {video.channel?.subscribers || 0} subscribers
+              </div>
+            </div>
+          </div>
+
+          {/* Like / Dislike */}
+          <div className="flex gap-2">
+            <button
+              onClick={handleLike}
+              className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm ${
+                userLiked
+                  ? "bg-white text-black"
+                  : "bg-gray-800 text-white hover:bg-gray-700"
+              }`}
+            >
+              {userLiked ? <AiFillLike /> : <AiOutlineLike />}
+              {likes}
+            </button>
+
+            <button
+              onClick={handleDislike}
+              className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm ${
+                userDisliked
+                  ? "bg-white text-black"
+                  : "bg-gray-800 text-white hover:bg-gray-700"
+              }`}
+            >
+              {userDisliked ? <AiFillDislike /> : <AiOutlineDislike />}
+              {dislikes}
+            </button>
+          </div>
+        </div>
+
+        {/* Description */}
+        <div className="mt-4 bg-gray-800 p-4 rounded-lg">
+          <div className="text-sm font-medium text-white mb-2">
+            {formatViews(video.views)} views •{" "}
+            {new Date(video.createdAt).toLocaleDateString()}
+          </div>
+          <p className="text-sm text-gray-300 whitespace-pre-wrap">
+            {video.description || "No description available."}
+          </p>
+        </div>
+
+        {/* Comments */}
+        <CommentSection videoId={id} />
+      </div>
+
+      {/* Right Section - Suggestions */}
+      <div className="flex flex-col gap-3">
+        {suggestions.map((s) => (
+          <div
+            key={s._id}
+            onClick={() => navigate(`/video/${s._id}`)}
+            className="flex gap-2 cursor-pointer hover:bg-gray-800 p-2 rounded-md"
+          >
+            <div className="w-40 aspect-video bg-gray-800 rounded-md overflow-hidden">
+              <img
+                src={s.thumbnailUrl}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div>
+              <div className="text-sm font-medium text-white line-clamp-2">
+                {s.title}
+              </div>
+              <div className="text-xs text-gray-400">
+                {s.channel?.channelName}
+              </div>
+              <div className="text-xs text-gray-400">
+                {formatViews(s.views)} views
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default VideoPlayer;

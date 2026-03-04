@@ -10,6 +10,7 @@ const Register = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    avatar: "",
   });
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState("");
@@ -46,6 +47,7 @@ const Register = () => {
         username: formData.username,
         email: formData.email,
         password: formData.password,
+        avatar: formData.avatar,
       });
       // After successful registration, redirect to login page
       navigate("/login");
@@ -154,6 +156,36 @@ const Register = () => {
               </span>
             )}
           </div>
+
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium text-gray-400">
+              Avatar (Image URL)
+            </label>
+
+            <input
+              type="text"
+              name="avatar"
+              placeholder="Paste your avatar image link"
+              value={formData.avatar}
+              onChange={handleChange}
+              className="px-4 py-3 bg-gray-700 border border-gray-600 rounded-md text-white text-sm placeholder-gray-400 focus:outline-none focus:border-blue-500"
+            />
+
+            {errors.avatar && (
+              <span className="text-red-500 text-xs">{errors.avatar}</span>
+            )}
+          </div>
+
+          {formData.avatar && (
+            <div className="mt-3 flex justify-center">
+              <img
+                src={formData.avatar}
+                alt="Avatar Preview"
+                className="w-20 h-20 rounded-full object-cover border border-gray-600"
+                onError={(e) => (e.target.style.display = "none")}
+              />
+            </div>
+          )}
 
           {/* Button */}
           <button

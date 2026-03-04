@@ -5,6 +5,7 @@ import Register from "./pages/Register";
 import { Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
+import VideoPlayer from "./pages/VideoPlayer";
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -28,6 +29,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/video/:id" element={<VideoPlayer />} />
+
             </Routes>
         </main>
       </div>
