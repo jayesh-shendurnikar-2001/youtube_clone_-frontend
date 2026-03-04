@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import VideoPlayer from "./pages/VideoPlayer";
 import ChannelPage from "./pages/ChannelPage";
+import CreateEditVideo from "./pages/CreateEditVideo";
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -32,7 +33,8 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/video/:id" element={<VideoPlayer />} />
             <Route path="/channel/:id" element={<ChannelPage />} />
-
+            <Route path="/channel/:channelId/upload" element={<CreateEditVideo />} />
+            <Route path="/channel/:channelId/edit/:videoId" element={<CreateEditVideo />} />
             </Routes>
         </main>
       </div>

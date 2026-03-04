@@ -166,7 +166,7 @@ const ChannelPage = () => {
 
       {/* Channel Header */}
       <div className="flex items-center gap-4 mt-6 border-b pb-4">
-        <img className="w-20 h-20 rounded-full" src={`${user.avatar}`} />
+        <img className="w-20 h-20 rounded-full" src={`${channel.owner?.avatar}`} />
 
         <div>
           <h1 className="text-2xl font-bold">{channel.channelName}</h1>
@@ -193,28 +193,28 @@ const ChannelPage = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {channel.videos.map((video) => (
             <div key={video._id} className="relative group">
-              {isOwner && (
-                <div className="absolute right-2 top-2 hidden group-hover:flex gap-2">
-                  <button
-                    className="bg-blue-500 text-white px-2 py-1 text-xs rounded"
-                    onClick={() =>
-                      navigate(`/channel/${channel._id}/edit/${video._id}`)
-                    }
-                  >
-                    Edit
-                  </button>
-
-                  <button
-                    className="bg-red-500 text-white px-2 py-1 text-xs rounded"
-                    onClick={() => handleDeleteVideo(video._id)}
-                  >
-                    Delete
-                  </button>
-                </div>
-              )}
-
-              <VideoCard video={video} />
-            </div>
+            {isOwner && (
+              <div className="absolute right-2 top-2 flex gap-2 z-10">
+                <button
+                  className="bg-blue-500 text-white px-2 py-1 text-xs rounded"
+                  onClick={() =>
+                    navigate(`/channel/${channel._id}/edit/${video._id}`)
+                  }
+                >
+                  Edit
+                </button>
+          
+                <button
+                  className="bg-red-500 text-white px-2 py-1 text-xs rounded"
+                  onClick={() => handleDeleteVideo(video._id)}
+                >
+                  Delete
+                </button>
+              </div>
+            )}
+          
+            <VideoCard video={video} />
+          </div>
           ))}
         </div>
       ) : (

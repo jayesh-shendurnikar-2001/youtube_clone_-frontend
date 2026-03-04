@@ -27,7 +27,8 @@ export const AuthProvider = ({ children }) => {
     };
 
     const updateUser = (updatedData) => {
-        const merged = { ...user, ...updatedData };
+        const stored = JSON.parse(localStorage.getItem('userInfo')) || {};
+        const merged = { ...stored, ...updatedData };
         setUser(merged);
         localStorage.setItem('userInfo', JSON.stringify(merged));
     };
