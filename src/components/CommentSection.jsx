@@ -22,6 +22,38 @@ const CommentSection = () => {
         },
       ]);
 
+      const handleAddComment = (e) => {
+        e.preventDefault();
+        if (!newComment.trim()) return;
+      
+        const newObj = {
+          _id: Date.now().toString(),
+          text: newComment,
+          createdAt: new Date(),
+          user: {
+            username: user.username,
+            avatar: user.avatar,
+          },
+        };
+      
+        setComments((prev) => [newObj, ...prev]);
+        setNewComment("");
+      };
+
+      const handleDeleteComment = (id) => {
+        setComments((prev) =>
+          prev.filter((c) => c._id !== id)
+        );
+      };
+
+      const handleEditComment = (id) => {
+        setComments((prev) =>
+          prev.map((c) =>
+            c._id === id ? { ...c, text: editText } : c
+          )
+        );
+      };
+
       {comments.map((comment) => (
         <div key={comment._id} className="flex gap-3 mb-4">
           <img
