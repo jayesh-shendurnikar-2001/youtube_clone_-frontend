@@ -27,7 +27,10 @@ const Header = ({ onToggleSidebar }) => {
     <header className="fixed top-0 left-0 right-0 h-14 bg-black flex items-center justify-between px-3 border-b border-gray-700 z-50">
       {/* LEFT */}
       <div className="flex items-center gap-3">
-        <button onClick={onToggleSidebar} className="text-white text-xl cursor-pointer">
+        <button
+          onClick={onToggleSidebar}
+          className="text-white text-xl cursor-pointer"
+        >
           <FiMenu />
         </button>
 
@@ -87,13 +90,33 @@ const Header = ({ onToggleSidebar }) => {
                 className="absolute right-0 mt-2 w-44 bg-gray-800 border
                border-gray-700 rounded-md shadow-lg"
               >
+                {/* <Link
+                  to={`/channel/${user.channels[0]}`}
+                  onClick={() => setShowDropdown(false)}
+                  className="flex items-center gap-2 px-4 py-2 text-white hover:bg-gray-700"
+                >
+                  <MdVideoLibrary /> My Channel
+                </Link> */}
+
                 <Link
-                  to={`/channel/${user.channels?.[0] || "create"}`}
+                  to={
+                    user.channels?.length
+                      ? `/channel/${user.channels[0]}`
+                      : "/channel/create"
+                  }
                   onClick={() => setShowDropdown(false)}
                   className="flex items-center gap-2 px-4 py-2 text-white hover:bg-gray-700"
                 >
                   <MdVideoLibrary /> My Channel
                 </Link>
+
+                {/* <Link
+                  to={`/channel/${user.channels?.[0] || "create"}`}
+                  onClick={() => setShowDropdown(false)}
+                  className="flex items-center gap-2 px-4 py-2 text-white hover:bg-gray-700"
+                >
+                  <MdVideoLibrary /> Create Channel
+                </Link> */}
 
                 <button
                   onClick={handleSignOut}
