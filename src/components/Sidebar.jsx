@@ -29,11 +29,11 @@ const Sidebar = ({ isOpen }) => {
   return (
     <>
       {/* Overlay - mobile only */}
-      {isOpen && <div className="fixed inset-0 bg-black/50 lg:hidden z-40" />}
+      {isOpen && <div className="fixed inset-0 bg-white lg:hidden z-40" />}
 
       <aside
         className={`fixed top-14 left-0 bottom-0
-        bg-[oklch(0.2_0_0)] text-white overflow-y-auto 
+        bg-white text-black overflow-y-auto 
                    overflow-x-hidden transition-all duration-300 z-50
         ${
           isOpen
@@ -54,9 +54,9 @@ const Sidebar = ({ isOpen }) => {
             <Link
               key={index}
               to={item.path}
-              className={`flex flex-col items-center gap-1 px-2 py-3 text-sm hover:bg-gray-800 transition
+              className={`flex flex-col items-center gap-1 px-2 py-3 text-sm hover:bg-gray-200 transition
                   ${isOpen ? "flex-row gap-4 px-6 py-2" : ""}
-                  ${isActive ? "bg-gray-800 font-medium" : ""}`}
+                  ${isActive ? "bg-gray-200 font-medium" : ""}`}
             >
               <span className="text-xl">{item.icon}</span>
               {isOpen ? (

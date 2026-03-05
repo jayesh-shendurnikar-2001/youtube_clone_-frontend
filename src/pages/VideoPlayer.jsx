@@ -132,7 +132,7 @@ const VideoPlayer = () => {
       {/* Left Section */}
       <div>
         {/* Video */}
-        <div className="aspect-video bg-black rounded-lg overflow-hidden">
+        <div className="aspect-video bg-white rounded-lg overflow-hidden">
           <iframe
             src={video.videoUrl}
             title={video.title}

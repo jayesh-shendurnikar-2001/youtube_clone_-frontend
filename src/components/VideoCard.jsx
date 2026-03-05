@@ -50,7 +50,7 @@ const VideoCard = ({ video }) => {
       onClick={handleClick}
     >
       {/* Thumbnail */}
-      <div className="relative w-full aspect-video overflow-hidden rounded-lg bg-gray-800">
+      <div className="relative w-full aspect-video overflow-hidden rounded-lg bg-white">
         <img
           src={video.thumbnailUrl}
           alt={video.title}
@@ -67,7 +67,7 @@ const VideoCard = ({ video }) => {
       <div className="flex gap-3 pt-3 px-1 pb-1">
         {/* Channel Avatar */}
         <img
-          className="w-9 h-9 rounded-full flex-shrink-0 object-cover bg-gray-700"
+          className="w-9 h-9 rounded-full flex-shrink-0 object-cover bg-white"
           src={
             video.uploader?.avatar ||
             `https://ui-avatars.com/api/?name=${
