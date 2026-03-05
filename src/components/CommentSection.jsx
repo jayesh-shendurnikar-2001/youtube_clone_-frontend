@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import API from "../api/api.js";
 import { useAuth } from "../context/authContext.jsx";
+import Swal from "sweetalert2";
 
 // Format relative time
 const timeAgo = (dateStr) => {
@@ -24,8 +25,7 @@ const CommentSection = ({ videoId }) => {
   const [editText, setEditText] = useState("");
   const [loading, setLoading] = useState(true);
   const [commentLoading, setCommentLoading] = useState(false);
-  const [error, setError] = useState("");
-
+  const [editLoading, setEditLoading] = useState(false);
   // Fetch comments
   useEffect(() => {
     const fetchComments = async () => {
@@ -45,12 +45,10 @@ const CommentSection = ({ videoId }) => {
   // Add comment
   const handleAddComment = async (e) => {
     e.preventDefault();
-
     if (!newComment.trim()) return;
 
     try {
       setCommentLoading(true);
-      setError("");
 
       const { data } = await API.post(`/comments/${videoId}`, {
         text: newComment,
@@ -61,8 +59,12 @@ const CommentSection = ({ videoId }) => {
     } catch (err) {
       const message = err.response?.data?.message || "Failed to add comment";
 
-      setError(message);
-      console.error("Failed to add comment:", err);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: message,
+        confirmButtonColor: "#2563eb",
+      });
     } finally {
       setCommentLoading(false);
     }
@@ -71,24 +73,74 @@ const CommentSection = ({ videoId }) => {
   // Edit comment
   const handleEditComment = async (commentId) => {
     if (!editText.trim()) return;
+
     try {
+      setEditLoading(true);
+
       const { data } = await API.put(`/comments/${commentId}`, {
         text: editText,
       });
+
       setComments(comments.map((c) => (c._id === commentId ? data : c)));
+
       setEditingId(null);
       setEditText("");
     } catch (err) {
+      const message = err.response?.data?.message || "Failed to edit comment";
+
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: message,
+        confirmButtonColor: "#2563eb",
+      });
+
       console.error("Failed to edit comment:", err);
+    } finally {
+      setEditLoading(false);
     }
   };
 
   // Delete comment
   const handleDeleteComment = async (commentId) => {
+
+    const result = await Swal.fire({
+      title: "Delete comment?",
+      text: "This action cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#ef4444",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Delete",
+    });
+  
+    if (!result.isConfirmed) return;
+  
     try {
       await API.delete(`/comments/${commentId}`);
+  
       setComments(comments.filter((c) => c._id !== commentId));
+  
+      Swal.fire({
+        icon: "success",
+        title: "Deleted!",
+        text: "Your comment has been deleted.",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+  
     } catch (err) {
+  
+      const message =
+        err.response?.data?.message || "Failed to delete comment";
+  
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: message,
+        confirmButtonColor: "#2563eb",
+      });
+  
       console.error("Failed to delete comment:", err);
     }
   };
@@ -144,7 +196,6 @@ const CommentSection = ({ videoId }) => {
                   {commentLoading ? "Posting..." : "Comment"}
                 </button>
               </div>
-            
             )}
           </form>
         </div>
@@ -156,12 +207,6 @@ const CommentSection = ({ videoId }) => {
           to add a comment
         </div>
       )}
-
-{error && (
-  <p className="text-red-500 text-xs mt-2">
-    {error}
-  </p>
-)}
 
       {/* Loader */}
       {loading ? (
@@ -217,10 +262,10 @@ const CommentSection = ({ videoId }) => {
 
                     <button
                       type="submit"
-                      disabled={!editText.trim()}
+                      disabled={!editText.trim() || editLoading}
                       className="px-3 py-1 bg-blue-600 text-white text-sm rounded-full hover:bg-blue-700 disabled:opacity-50"
                     >
-                      Save
+                      {editLoading ? "Saving..." : "Save"}
                     </button>
                   </div>
                 </form>
