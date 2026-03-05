@@ -5,6 +5,7 @@ import API from "../api/api.js";
 import VideoCard from "../components/VideoCard.jsx";
 import { FiUpload } from "react-icons/fi";
 import { useAuth } from "../context/authContext.jsx";
+import Swal from "sweetalert2";
 
 const ChannelPage = () => {
   const { id } = useParams();
@@ -24,6 +25,8 @@ const ChannelPage = () => {
   });
 
   const [formError, setFormError] = useState("");
+
+  const [deletingVideoId, setDeletingVideoId] = useState(null);
 
   useEffect(() => {
     const fetchChannel = async () => {
@@ -60,17 +63,17 @@ const ChannelPage = () => {
   const handleCreateChannel = async (e) => {
     e.preventDefault();
     setFormError("");
-  
+
     try {
       const res = await API.post("/channels", channelForm);
       const channel = res.data;
-  
+
       if (!channel || !channel._id) {
         throw new Error("Invalid response");
       }
-  
+
       updateUser({ channels: [channel._id] });
-  
+
       navigate(`/channel/${channel._id}`, { replace: true });
     } catch (err) {
       console.error(err);
@@ -79,14 +82,50 @@ const ChannelPage = () => {
   };
 
   const handleDeleteVideo = async (videoId) => {
-    if (!window.confirm("Delete this video?")) return;
+    if (deletingVideoId) return;
+
+    const result = await Swal.fire({
+      title: "Delete video?",
+      text: "This video will be permanently deleted.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#ef4444",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Delete",
+    });
+
+    if (!result.isConfirmed) return;
 
     try {
+      setDeletingVideoId(videoId);
+
       await API.delete(`/videos/${videoId}`);
-      const { data } = await API.get(`/channels/${id}`);
-      setChannel(data);
+
+      // remove video locally (faster than refetching)
+      setChannel((prev) => ({
+        ...prev,
+        videos: prev.videos.filter((v) => v._id !== videoId),
+      }));
+
+      Swal.fire({
+        icon: "success",
+        title: "Deleted!",
+        text: "Video deleted successfully",
+        timer: 1500,
+        showConfirmButton: false,
+      });
     } catch (err) {
+      const message = err.response?.data?.message || "Failed to delete video";
+
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: message,
+      });
+
       console.log(err);
+    } finally {
+      setDeletingVideoId(null);
     }
   };
 
@@ -166,7 +205,10 @@ const ChannelPage = () => {
 
       {/* Channel Header */}
       <div className="flex items-center gap-4 mt-6 border-b pb-4">
-        <img className="w-20 h-20 rounded-full" src={`${channel.owner?.avatar}`} />
+        <img
+          className="w-20 h-20 rounded-full"
+          src={`${channel.owner?.avatar}`}
+        />
 
         <div>
           <h1 className="text-2xl font-bold">{channel.channelName}</h1>
@@ -193,28 +235,29 @@ const ChannelPage = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {channel.videos.map((video) => (
             <div key={video._id} className="relative group">
-            {isOwner && (
-              <div className="absolute right-2 top-2 flex gap-2 z-10">
-                <button
-                  className="bg-blue-500 text-white px-2 py-1 text-xs rounded"
-                  onClick={() =>
-                    navigate(`/channel/${channel._id}/edit/${video._id}`)
-                  }
-                >
-                  Edit
-                </button>
-          
-                <button
-                  className="bg-red-500 text-white px-2 py-1 text-xs rounded"
-                  onClick={() => handleDeleteVideo(video._id)}
-                >
-                  Delete
-                </button>
-              </div>
-            )}
-          
-            <VideoCard video={video} />
-          </div>
+              {isOwner && (
+                <div className="absolute right-2 top-2 flex gap-2 z-10">
+                  <button
+                    className="bg-blue-500 text-white px-2 py-1 text-xs rounded"
+                    onClick={() =>
+                      navigate(`/channel/${channel._id}/edit/${video._id}`)
+                    }
+                  >
+                    Edit
+                  </button>
+
+                  <button
+  onClick={() => handleDeleteVideo(video._id)}
+  disabled={deletingVideoId === video._id}
+  className="bg-red-500 text-white px-2 py-1 text-xs rounded hover:bg-red-600 disabled:opacity-50"
+>
+  {deletingVideoId === video._id ? "Deleting..." : "Delete"}
+</button>
+                </div>
+              )}
+
+              <VideoCard video={video} />
+            </div>
           ))}
         </div>
       ) : (
