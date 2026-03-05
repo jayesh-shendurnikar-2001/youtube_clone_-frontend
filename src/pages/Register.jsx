@@ -112,7 +112,7 @@ const Register = () => {
               placeholder="Enter your email"
               value={formData.email}
               onChange={handleChange}
-              className="px-4 py-3 bg-gray-50 border border-gray-600 rounded-md text-white text-sm placeholder-gray-400 focus:outline-none focus:border-blue-500"
+              className="px-4 py-3 bg-gray-50 border border-gray-600 rounded-md text-black text-sm placeholder-gray-400 focus:outline-none focus:border-blue-500"
             />
             {errors.email && (
               <span className="text-red-500 text-xs">{errors.email}</span>
@@ -130,7 +130,7 @@ const Register = () => {
               placeholder="Create a password (min 6 characters)"
               value={formData.password}
               onChange={handleChange}
-              className="px-4 py-3 bg-gray-50 border border-gray-600 rounded-md text-white text-sm placeholder-gray-400 focus:outline-none focus:border-blue-500"
+              className="px-4 py-3 bg-gray-50 border border-gray-600 rounded-md text-black text-sm placeholder-gray-400 focus:outline-none focus:border-blue-500"
             />
             {errors.password && (
               <span className="text-red-500 text-xs">{errors.password}</span>
@@ -148,7 +148,7 @@ const Register = () => {
               placeholder="Confirm your password"
               value={formData.confirmPassword}
               onChange={handleChange}
-              className="px-4 py-3 bg-gray-50 border border-gray-600 rounded-md text-white text-sm placeholder-gray-400 focus:outline-none focus:border-blue-500"
+              className="px-4 py-3 bg-gray-50 border border-gray-600 rounded-md text-black text-sm placeholder-gray-400 focus:outline-none focus:border-blue-500"
             />
             {errors.confirmPassword && (
               <span className="text-red-500 text-xs">
@@ -168,7 +168,7 @@ const Register = () => {
               placeholder="Paste your avatar image link"
               value={formData.avatar}
               onChange={handleChange}
-              className="px-4 py-3 bg-gray-50 border border-gray-600 rounded-md text-white text-sm placeholder-gray-400 focus:outline-none focus:border-blue-500"
+              className="px-4 py-3 bg-gray-50 border border-gray-600 rounded-md text-black text-sm placeholder-gray-400 focus:outline-none focus:border-blue-500"
             />
 
             {errors.avatar && (

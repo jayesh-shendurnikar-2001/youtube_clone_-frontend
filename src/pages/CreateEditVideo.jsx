@@ -90,7 +90,7 @@ const CreateEditVideo = () => {
     return (
         <div className="max-w-2xl mx-auto p-6">
 
-  <h1 className="text-2xl font-semibold mb-8 text-white">
+  <h1 className="text-2xl font-semibold mb-8 text-black">
     {isEditing ? "Edit Video" : "Upload Video"}
   </h1>
 
@@ -104,7 +104,7 @@ const CreateEditVideo = () => {
 
     {/* Title */}
     <div className="flex flex-col gap-2">
-      <label className="text-sm font-medium text-gray-300">
+      <label className="text-sm font-medium text-gray-700">
         Title <span className="text-red-500">*</span>
       </label>
 
@@ -114,13 +114,13 @@ const CreateEditVideo = () => {
         placeholder="Enter video title"
         value={formData.title}
         onChange={handleChange}
-        className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded text-white focus:border-blue-500 outline-none"
+        className="w-full px-4 py-3 bg-gray-50 border border-gray-600 rounded text-black focus:border-blue-500 outline-none"
       />
     </div>
 
     {/* Description */}
     <div className="flex flex-col gap-2">
-      <label className="text-sm font-medium text-gray-300">
+      <label className="text-sm font-medium text-gray-700">
         Description
       </label>
 
@@ -129,13 +129,13 @@ const CreateEditVideo = () => {
         placeholder="Tell viewers about your video"
         value={formData.description}
         onChange={handleChange}
-        className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded text-white min-h-[100px] focus:border-blue-500 outline-none"
+        className="w-full px-4 py-3 bg-gray-50 border border-gray-600 rounded text-black min-h-[100px] focus:border-blue-500 outline-none"
       />
     </div>
 
     {/* Video URL */}
     <div className="flex flex-col gap-2">
-      <label className="text-sm font-medium text-gray-300">
+      <label className="text-sm font-medium text-gray-700">
         Video URL <span className="text-red-500">*</span>
       </label>
 
@@ -145,17 +145,17 @@ const CreateEditVideo = () => {
         placeholder="https://www.youtube.com/embed/VIDEO_ID"
         value={formData.videoUrl}
         onChange={handleChange}
-        className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded text-white focus:border-blue-500 outline-none"
+        className="w-full px-4 py-3 bg-gray-50 border border-gray-600 rounded text-black focus:border-blue-500 outline-none"
       />
 
-      <span className="text-xs text-gray-400">
+      <span className="text-xs text-gray-700">
         Use a YouTube embed URL (example: https://www.youtube.com/embed/VIDEO_ID)
       </span>
     </div>
 
     {/* Thumbnail */}
     <div className="flex flex-col gap-2">
-      <label className="text-sm font-medium text-gray-300">
+      <label className="text-sm font-medium text-gray-700">
         Thumbnail URL <span className="text-red-500">*</span>
       </label>
 
@@ -165,7 +165,7 @@ const CreateEditVideo = () => {
         placeholder="https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg"
         value={formData.thumbnailUrl}
         onChange={handleChange}
-        className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded text-white focus:border-blue-500 outline-none"
+        className="w-full px-4 py-3 bg-gray-50 border border-gray-600 rounded text-black focus:border-blue-500 outline-none"
       />
 
       <span className="text-xs text-gray-400">
@@ -188,7 +188,7 @@ const CreateEditVideo = () => {
 
     {/* Category */}
     <div className="flex flex-col gap-2">
-      <label className="text-sm font-medium text-gray-300">
+      <label className="text-sm font-medium text-gray-700">
         Category <span className="text-red-500">*</span>
       </label>
 
@@ -196,7 +196,7 @@ const CreateEditVideo = () => {
         name="category"
         value={formData.category}
         onChange={handleChange}
-        className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded text-white focus:border-blue-500 outline-none"
+        className="w-full px-4 py-3 bg-gray-50 border border-gray-600 rounded text-black focus:border-blue-500 outline-none"
       >
         {categories.map((cat) => (
           <option key={cat} value={cat}>

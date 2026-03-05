@@ -46,11 +46,11 @@ const VideoCard = ({ video }) => {
 
   return (
     <div
-      className="cursor-pointer rounded-lg overflow-hidden transition-transform duration-200 hover:-translate-y-1 group"
+      className="cursor-pointer rounded-lg overflow-hidden transition-transform duration-200 hover:-translate-y-1 group text-black"
       onClick={handleClick}
     >
       {/* Thumbnail */}
-      <div className="relative w-full aspect-video overflow-hidden rounded-lg bg-white">
+      <div className="relative w-full aspect-video overflow-hidden rounded-lg bg-white text-black">
         <img
           src={video.thumbnailUrl}
           alt={video.title}
@@ -83,20 +83,20 @@ const VideoCard = ({ video }) => {
 
         <div className="flex-1 min-w-0">
           {/* Title */}
-          <h3 className="text-sm font-medium leading-snug text-white line-clamp-2 mb-1">
+          <h3 className="text-sm font-medium leading-snug text-black line-clamp-2 mb-1">
             {video.title}
           </h3>
 
           {/* Channel Name */}
           <div
-            className="text-xs text-gray-400 hover:text-white transition"
+            className="text-xs text-gray-500 hover:text-black transition"
             onClick={handleChannelClick}
           >
             {video.channel?.channelName || "Unknown Channel"}
           </div>
 
           {/* Views & Time */}
-          <div className="text-xs text-gray-400 flex gap-2">
+          <div className="text-xs text-gray-700 flex gap-2">
             <span>{formatViews(video.views)} views</span>
             <span>•</span>
             <span>{formatTimeAgo(video.createdAt)}</span>

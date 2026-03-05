@@ -153,7 +153,7 @@ const CommentSection = ({ videoId }) => {
 
   return (
     <div className="mt-6">
-      <h3 className="text-lg font-semibold mb-6 text-white">
+      <h3 className="text-lg font-semibold mb-6 text-black">
         {comments.length} Comments
       </h3>
 
@@ -175,7 +175,7 @@ const CommentSection = ({ videoId }) => {
               placeholder="Add a comment..."
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
-              className="w-full py-2 border-b border-gray-600 text-sm text-white bg-transparent focus:outline-none focus:border-white"
+              className="w-full py-2 border-b border-gray-600 text-sm text-black bg-transparent focus:outline-none focus:border-white"
             />
 
             {newComment.trim() && (
@@ -183,7 +183,7 @@ const CommentSection = ({ videoId }) => {
                 <button
                   type="button"
                   onClick={() => setNewComment("")}
-                  className="px-4 py-2 text-sm text-gray-400 hover:text-white"
+                  className="px-4 py-2 text-sm text-gray-700 hover:text-white"
                 >
                   Cancel
                 </button>
@@ -229,10 +229,10 @@ const CommentSection = ({ videoId }) => {
 
             <div className="flex-1">
               <div className="flex items-center gap-2 text-sm">
-                <span className="font-medium text-white">
+                <span className="font-medium text-black">
                   @{comment.user?.username}
                 </span>
-                <span className="text-gray-400 text-xs">
+                <span className="text-gray-900 text-xs">
                   {timeAgo(comment.createdAt)}
                 </span>
               </div>
@@ -248,14 +248,14 @@ const CommentSection = ({ videoId }) => {
                     type="text"
                     value={editText}
                     onChange={(e) => setEditText(e.target.value)}
-                    className="w-full mt-2 border-b border-gray-600 bg-transparent text-white focus:outline-none"
+                    className="w-full mt-2 border-b border-gray-600 bg-transparent text-black focus:outline-none"
                   />
 
                   <div className="flex justify-end gap-2 mt-2">
                     <button
                       type="button"
                       onClick={() => setEditingId(null)}
-                      className="text-sm text-gray-400 hover:text-white"
+                      className="text-sm text-gray-700 hover:text-white"
                     >
                       Cancel
                     </button>
@@ -271,13 +271,13 @@ const CommentSection = ({ videoId }) => {
                 </form>
               ) : (
                 <>
-                  <p className="text-sm text-white mt-1">{comment.text}</p>
+                  <p className="text-sm text-black mt-1">{comment.text}</p>
 
                   {user && user._id === comment.user?._id && (
-                    <div className="flex gap-3 mt-1 text-xs text-gray-400">
+                    <div className="flex gap-3 mt-1 text-xs text-gray-700">
                       <button
                         onClick={() => startEditing(comment)}
-                        className="hover:text-white"
+                        className="hover:text-black"
                       >
                         Edit
                       </button>

@@ -142,7 +142,7 @@ const VideoPlayer = () => {
         </div>
 
         {/* Title */}
-        <h1 className="text-xl font-semibold text-white mt-4">{video.title}</h1>
+        <h1 className="text-xl font-semibold text-black mt-4">{video.title}</h1>
 
         {/* Channel + Like */}
         <div className="flex justify-between items-center mt-4 border-b border-gray-700 pb-4 flex-wrap gap-3">
@@ -162,12 +162,12 @@ const VideoPlayer = () => {
 
               <div>
                 <div
-                  className="text-white font-medium cursor-pointer"
+                  className="text-black font-medium cursor-pointer"
                   onClick={() => navigate(`/channel/${video.channel?._id}`)}
                 >
                   {video.channel?.channelName}
                 </div>
-                <div className="text-sm text-gray-400">
+                <div className="text-sm text-gray-700">
                   {video.channel?.subscribers || 0} subscribers
                 </div>
               </div>
@@ -214,12 +214,12 @@ const VideoPlayer = () => {
 
         {/* Description */}
 
-        <div className="mt-4 bg-gray-800 p-4 rounded-lg">
-          <div className="text-sm font-medium text-white mb-2">
+        <div className="mt-4 bg-white p-4 rounded-lg">
+          <div className="text-sm font-medium text-black mb-2">
             {formatViews(video.views)} views •{" "}
             {new Date(video.createdAt).toLocaleDateString()}
           </div>
-          <p className="text-sm text-gray-300 whitespace-pre-wrap">
+          <p className="text-sm text-gray-900 whitespace-pre-wrap">
             {expanded ? description : description.slice(0, 120)}
 
             {description.length > 120 && (
@@ -243,22 +243,22 @@ const VideoPlayer = () => {
           <div
             key={s._id}
             onClick={() => navigate(`/video/${s._id}`)}
-            className="flex gap-2 cursor-pointer hover:bg-gray-800 p-2 rounded-md"
+            className="flex gap-2 cursor-pointer hover:bg-gray-100 p-2 rounded-md"
           >
-            <div className="w-40 aspect-video bg-gray-800 rounded-md overflow-hidden">
+            <div className="w-40 aspect-video bg-white text-black rounded-md overflow-hidden">
               <img
                 src={s.thumbnailUrl}
                 className="w-full h-full object-cover"
               />
             </div>
             <div>
-              <div className="text-sm font-medium text-white line-clamp-2">
+              <div className="text-sm font-medium text-black line-clamp-2">
                 {s.title}
               </div>
-              <div className="text-xs text-gray-400">
+              <div className="text-xs text-gray-700">
                 {s.channel?.channelName}
               </div>
-              <div className="text-xs text-gray-400">
+              <div className="text-xs text-gray-700">
                 {formatViews(s.views)} views
               </div>
             </div>

@@ -95,8 +95,7 @@ const ChannelPage = () => {
     try {
       await API.put(`/channels/edit-channel/${channel._id}`, editChannelForm);
 
-      // ✅ Only patch edited fields — DO NOT spread `data` from backend
-      // as it may lack populated `owner`, causing a white screen crash
+   
       setChannel((prev) => ({
         ...prev,
         channelName: editChannelForm.channelName,
@@ -180,8 +179,8 @@ const ChannelPage = () => {
 
   if (showCreateForm || id === "create") {
     return (
-      <div className="max-w-md mx-auto mt-10">
-        <h2 className="text-xl font-semibold mb-4">Create Channel</h2>
+      <div className="max-w-md mx-auto mt-10 border-2 border-black p-5.5 rounded-4xl ">
+        <h2 className="text-xl font-semibold mb-4 text-black">Create Channel</h2>
 
         {formError && (
           <div className="bg-red-100 text-red-600 p-2 rounded mb-3">
@@ -193,7 +192,7 @@ const ChannelPage = () => {
           <input
             type="text"
             placeholder="Channel Name"
-            className="w-full border p-2 rounded"
+            className="w-full border p-2 rounded text-black"
             value={channelForm.channelName}
             onChange={(e) =>
               setChannelForm({ ...channelForm, channelName: e.target.value })
@@ -202,7 +201,7 @@ const ChannelPage = () => {
 
           <textarea
             placeholder="Description"
-            className="w-full border p-2 rounded"
+            className="w-full border p-2 rounded text-black"
             value={channelForm.description}
             onChange={(e) =>
               setChannelForm({ ...channelForm, description: e.target.value })
@@ -212,7 +211,7 @@ const ChannelPage = () => {
           <input
             type="text"
             placeholder="Banner URL"
-            className="w-full border p-2 rounded"
+            className="w-full border p-2 rounded text-black"
             value={channelForm.channelBanner}
             onChange={(e) =>
               setChannelForm({
@@ -222,7 +221,7 @@ const ChannelPage = () => {
             }
           />
 
-          <button className="bg-blue-600 text-white w-full py-2 rounded">
+          <button className="bg-blue-500 text-black w-full py-2 rounded-2xl">
             Create Channel
           </button>
         </form>
@@ -231,7 +230,7 @@ const ChannelPage = () => {
   }
 
   if (!channel) {
-    return <div className="text-center mt-10">Channel not found</div>;
+    return <div className="text-center mt-10 text-black">Channel not found</div>;
   }
 
   return (
@@ -254,11 +253,11 @@ const ChannelPage = () => {
 
         <div>
           <h1 className="text-2xl font-bold">{channel.channelName}</h1>
-          <p className="text-gray-500 text-sm">
+          <p className="text-gray-700 text-sm">
             {channel.subscribers} subscribers • {channel.videos?.length} videos
           </p>
           {channel.description && (
-            <p className="text-gray-400 text-sm mt-1">{channel.description}</p>
+            <p className="text-gray-700 text-sm mt-1">{channel.description}</p>
           )}
         </div>
 
@@ -266,7 +265,7 @@ const ChannelPage = () => {
           <div className="ml-auto flex gap-2">
             <button
               onClick={() => navigate(`/channel/${channel._id}/upload`)}
-              className="flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+              className="flex items-center gap-2 bg-red-500 px-4 py-2 rounded hover:bg-red-600"
             >
               <FiUpload />
               Upload
@@ -291,14 +290,14 @@ const ChannelPage = () => {
 
       {/* Edit Channel Form */}
       {showEditForm && (
-        <div className="bg-black p-6 rounded mt-6 text-white border-2">
-          <h2 className="text-lg font-semibold mb-4 text-white">
+        <div className="bg-white p-6 rounded mt-6 text-black border-2">
+          <h2 className="text-lg font-semibold mb-4 text-black">
             Edit Channel
           </h2>
 
           <form
             onSubmit={handleUpdateChannel}
-            className="flex flex-col gap-3 text-white"
+            className="flex flex-col gap-3 text-black"
           >
             <label>Channel Name</label>
             <input
@@ -395,7 +394,7 @@ const ChannelPage = () => {
           ))}
         </div>
       ) : (
-        <p className="text-center text-gray-500 mt-10">No videos uploaded</p>
+        <p className="text-center text-gray-700 mt-10">No videos uploaded</p>
       )}
     </div>
   );
