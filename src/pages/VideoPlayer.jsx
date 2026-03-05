@@ -30,6 +30,7 @@ const VideoPlayer = () => {
   const [dislikes, setDislikes] = useState(0);
   const [userLiked, setUserLiked] = useState(false);
   const [userDisliked, setUserDisliked] = useState(false);
+  const [likeLoading, setLikeLoading] = useState(false);
 
   const [expanded, setExpanded] = useState(false);
 
@@ -78,20 +79,37 @@ const VideoPlayer = () => {
 
   const handleLike = async () => {
     if (!user) return navigate("/login");
-    const { data } = await API.put(`/videos/${id}/like`);
-    setLikes(data.likes);
-    setDislikes(data.dislikes);
-    setUserLiked(data.likes_list?.includes(user._id));
-    setUserDisliked(data.dislikes_list?.includes(user._id));
+    if (likeLoading) return; // prevent multiple clicks
+
+    try {
+      setLikeLoading(true);
+      const { data } = await API.put(`/videos/${id}/like`);
+      setLikes(data.likes);
+      setDislikes(data.dislikes);
+      setUserLiked(data.likes_list?.includes(user._id));
+      setUserDisliked(data.dislikes_list?.includes(user._id));
+    } catch (err) {
+      console.error("Like failed", err);
+    } finally {
+      setLikeLoading(false);
+    }
   };
 
   const handleDislike = async () => {
     if (!user) return navigate("/login");
-    const { data } = await API.put(`/videos/${id}/dislike`);
-    setLikes(data.likes);
-    setDislikes(data.dislikes);
-    setUserLiked(data.likes_list?.includes(user._id));
-    setUserDisliked(data.dislikes_list?.includes(user._id));
+    if (likeLoading) return;
+    try {
+      setLikeLoading(true);
+      const { data } = await API.put(`/videos/${id}/dislike`);
+      setLikes(data.likes);
+      setDislikes(data.dislikes);
+      setUserLiked(data.likes_list?.includes(user._id));
+      setUserDisliked(data.dislikes_list?.includes(user._id));
+    } catch (err) {
+      console.error("Dislike failed", err);
+    } finally {
+      setLikeLoading(false);
+    }
   };
 
   if (loading) {
@@ -156,8 +174,10 @@ const VideoPlayer = () => {
             </div>
 
             {/* Right Side - Dummy Subscribe Button */}
-            <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 ml-4.5 
-                                 rounded-full text-sm font-medium transition">
+            <button
+              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 ml-4.5 
+                                 rounded-full text-sm font-medium transition"
+            >
               Subscribe
             </button>
           </div>
@@ -166,11 +186,12 @@ const VideoPlayer = () => {
           <div className="flex gap-2">
             <button
               onClick={handleLike}
+              disabled={likeLoading}
               className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm ${
                 userLiked
                   ? "bg-white text-black"
                   : "bg-gray-800 text-white hover:bg-gray-700"
-              }`}
+              } ${likeLoading ? "opacity-50 cursor-not-allowed" : ""}`}
             >
               {userLiked ? <AiFillLike /> : <AiOutlineLike />}
               {likes}
@@ -178,11 +199,12 @@ const VideoPlayer = () => {
 
             <button
               onClick={handleDislike}
+              disabled={likeLoading}
               className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm ${
                 userDisliked
                   ? "bg-white text-black"
                   : "bg-gray-800 text-white hover:bg-gray-700"
-              }`}
+              } ${likeLoading ? "opacity-50 cursor-not-allowed" : ""}`}
             >
               {userDisliked ? <AiFillDislike /> : <AiOutlineDislike />}
               {dislikes}
