@@ -1,6 +1,6 @@
 // src/pages/ChannelPage.jsx
 import { useState, useEffect } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate,} from "react-router-dom";
 import API from "../api/api.js";
 import VideoCard from "../components/VideoCard.jsx";
 import { FiUpload } from "react-icons/fi";
@@ -17,6 +17,7 @@ const ChannelPage = () => {
   const [isOwner, setIsOwner] = useState(false);
 
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [showEditForm, setShowEditForm] = useState(false);
 
   const [channelForm, setChannelForm] = useState({
     channelName: "",
@@ -24,8 +25,13 @@ const ChannelPage = () => {
     channelBanner: "",
   });
 
-  const [formError, setFormError] = useState("");
+  const [editChannelForm, setEditChannelForm] = useState({
+    channelName: "",
+    description: "",
+    channelBanner: "",
+  });
 
+  const [formError, setFormError] = useState("");
   const [deletingVideoId, setDeletingVideoId] = useState(null);
 
   useEffect(() => {
@@ -81,6 +87,42 @@ const ChannelPage = () => {
     }
   };
 
+  const handleUpdateChannel = async (e) => {
+    e.preventDefault();
+
+    if (!channel) return;
+
+    try {
+      await API.put(`/channels/edit-channel/${channel._id}`, editChannelForm);
+
+      // ✅ Only patch edited fields — DO NOT spread `data` from backend
+      // as it may lack populated `owner`, causing a white screen crash
+      setChannel((prev) => ({
+        ...prev,
+        channelName: editChannelForm.channelName,
+        description: editChannelForm.description,
+        channelBanner: editChannelForm.channelBanner,
+      }));
+
+      setShowEditForm(false);
+
+      Swal.fire({
+        icon: "success",
+        title: "Channel updated!",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+    } catch (err) {
+      console.error("Update channel error:", err);
+
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: err.response?.data?.message || "Failed to update channel",
+      });
+    }
+  };
+
   const handleDeleteVideo = async (videoId) => {
     if (deletingVideoId) return;
 
@@ -101,7 +143,6 @@ const ChannelPage = () => {
 
       await API.delete(`/videos/${videoId}`);
 
-      // remove video locally (faster than refetching)
       setChannel((prev) => ({
         ...prev,
         videos: prev.videos.filter((v) => v._id !== videoId),
@@ -200,6 +241,7 @@ const ChannelPage = () => {
         <img
           src={channel.channelBanner || "https://placehold.co/1200x300"}
           className="w-full h-full object-cover"
+          alt="Channel Banner"
         />
       </div>
 
@@ -215,18 +257,110 @@ const ChannelPage = () => {
           <p className="text-gray-500 text-sm">
             {channel.subscribers} subscribers • {channel.videos?.length} videos
           </p>
+          {channel.description && (
+            <p className="text-gray-400 text-sm mt-1">{channel.description}</p>
+          )}
         </div>
 
         {isOwner && (
-          <button
-            onClick={() => navigate(`/channel/${channel._id}/upload`)}
-            className="ml-auto flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded"
-          >
-            <FiUpload />
-            Upload
-          </button>
+          <div className="ml-auto flex gap-2">
+            <button
+              onClick={() => navigate(`/channel/${channel._id}/upload`)}
+              className="flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+            >
+              <FiUpload />
+              Upload
+            </button>
+
+            <button
+              onClick={() => {
+                setEditChannelForm({
+                  channelName: channel.channelName || "",
+                  description: channel.description || "",
+                  channelBanner: channel.channelBanner || "",
+                });
+                setShowEditForm(true);
+              }}
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            >
+              Edit Channel
+            </button>
+          </div>
         )}
       </div>
+
+      {/* Edit Channel Form */}
+      {showEditForm && (
+        <div className="bg-black p-6 rounded mt-6 text-white border-2">
+          <h2 className="text-lg font-semibold mb-4 text-white">
+            Edit Channel
+          </h2>
+
+          <form
+            onSubmit={handleUpdateChannel}
+            className="flex flex-col gap-3 text-white"
+          >
+            <label>Channel Name</label>
+            <input
+              type="text"
+              placeholder="Channel Name"
+              value={editChannelForm.channelName}
+              onChange={(e) =>
+                setEditChannelForm({
+                  ...editChannelForm,
+                  channelName: e.target.value,
+                })
+              }
+              className="border p-2 rounded"
+            />
+
+            <label>Description</label>
+            <textarea
+              placeholder="Description"
+              value={editChannelForm.description}
+              onChange={(e) =>
+                setEditChannelForm({
+                  ...editChannelForm,
+                  description: e.target.value,
+                })
+              }
+              className="border p-2 rounded"
+              rows={3}
+            />
+
+            <label>Banner URL</label>
+            <input
+              type="text"
+              placeholder="Banner URL"
+              value={editChannelForm.channelBanner}
+              onChange={(e) =>
+                setEditChannelForm({
+                  ...editChannelForm,
+                  channelBanner: e.target.value,
+                })
+              }
+              className="border p-2 rounded "
+            />
+
+            <div className="flex gap-3">
+              <button
+                type="submit"
+                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              >
+                Save
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setShowEditForm(false)}
+                className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
 
       {/* Videos */}
       <h2 className="text-lg font-semibold mt-6 mb-4">Videos</h2>
@@ -238,7 +372,7 @@ const ChannelPage = () => {
               {isOwner && (
                 <div className="absolute right-2 top-2 flex gap-2 z-10">
                   <button
-                    className="bg-blue-500 text-white px-2 py-1 text-xs rounded"
+                    className="bg-blue-500 text-white px-2 py-1 text-xs rounded hover:bg-blue-600"
                     onClick={() =>
                       navigate(`/channel/${channel._id}/edit/${video._id}`)
                     }
@@ -247,12 +381,12 @@ const ChannelPage = () => {
                   </button>
 
                   <button
-  onClick={() => handleDeleteVideo(video._id)}
-  disabled={deletingVideoId === video._id}
-  className="bg-red-500 text-white px-2 py-1 text-xs rounded hover:bg-red-600 disabled:opacity-50"
->
-  {deletingVideoId === video._id ? "Deleting..." : "Delete"}
-</button>
+                    onClick={() => handleDeleteVideo(video._id)}
+                    disabled={deletingVideoId === video._id}
+                    className="bg-red-500 text-white px-2 py-1 text-xs rounded hover:bg-red-600 disabled:opacity-50"
+                  >
+                    {deletingVideoId === video._id ? "Deleting..." : "Delete"}
+                  </button>
                 </div>
               )}
 
