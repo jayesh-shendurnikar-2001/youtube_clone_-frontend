@@ -58,14 +58,14 @@ const Login = () => {
   return (
     <div
       className="flex items-start justify-center min-h-[calc(100vh-104px)] p-6 pt-20"
-      id="login-page"
+      id="login-page" 
     >
-      <div className="w-full max-w-md bg-gray-800 border border-gray-700 rounded-xl px-8 py-10 shadow-lg">
-        <h1 className="text-center text-2xl font-semibold mb-2 text-white">
+      <div className="w-full max-w-md bg-white border border-gray-700 rounded-xl px-8 py-10 shadow-lg">
+        <h1 className="text-center text-2xl font-semibold mb-2 text-black">
           Sign In
         </h1>
 
-        <p className="text-center text-sm text-gray-400 mb-6">
+        <p className="text-center text-sm text-gray-900 mb-6">
           to continue to YouTube
         </p>
 
@@ -85,7 +85,7 @@ const Login = () => {
               placeholder="Enter your email"
               value={formData.email}
               onChange={handleChange}
-              className="px-4 py-3 bg-gray-700 border border-gray-600 rounded-md text-white text-sm placeholder-gray-400 focus:outline-none focus:border-blue-500"
+              className="px-4 py-3 bg-gray-50 border border-gray-600 rounded-md text-black text-sm placeholder-gray-400 focus:outline-none focus:border-blue-500"
             />
             {errors.email && (
               <span className="text-red-500 text-xs">{errors.email}</span>
@@ -103,7 +103,7 @@ const Login = () => {
               placeholder="Enter your password"
               value={formData.password}
               onChange={handleChange}
-              className="px-4 py-3 bg-gray-700 border border-gray-600 rounded-md text-white text-sm placeholder-gray-400 focus:outline-none focus:border-blue-500"
+              className="px-4 py-3 bg-gray-50 border border-gray-600 rounded-md text-black text-sm placeholder-gray-400 focus:outline-none focus:border-blue-500"
             />
             {errors.password && (
               <span className="text-red-500 text-xs">{errors.password}</span>

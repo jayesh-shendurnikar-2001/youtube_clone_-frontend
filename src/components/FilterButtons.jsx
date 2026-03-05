@@ -25,8 +25,8 @@ const categories = [
             className={`px-4 py-2 rounded-lg text-sm font-medium flex-shrink-0 transition
               ${
                 activeCategory === category
-                  ? "bg-white text-black"
-                  : "bg-gray-800 text-white hover:bg-gray-700"
+                  ? "bg-black text-white"
+                  : "bg-gray-200 text-black hover:bg-gray-200"
               }`}
           >
             {category}

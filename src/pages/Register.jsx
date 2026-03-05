@@ -70,11 +70,11 @@ const Register = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen p-6 mt-[-40px]">
-      <div className="w-full max-w-md bg-gray-800 border border-gray-700 rounded-xl px-8 py-10 shadow-lg">
-        <h1 className="text-center text-2xl font-semibold mb-2 text-white">
+      <div className="w-full max-w-md bg-white border border-gray-700 rounded-xl px-8 py-10 shadow-lg">
+        <h1 className="text-center text-2xl font-semibold mb-2 text-black">
           Create Account
         </h1>
-        <p className="text-center text-sm text-gray-400 mb-6">
+        <p className="text-center text-sm text-gray-900 mb-6">
           to continue to YouTube
         </p>
 
@@ -87,7 +87,7 @@ const Register = () => {
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           {/* Username */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-400">
+            <label className="text-sm font-medium text-gray-700">
               Username
             </label>
             <input
@@ -96,7 +96,7 @@ const Register = () => {
               placeholder="Choose a username"
               value={formData.username}
               onChange={handleChange}
-              className="px-4 py-3 bg-gray-700 border border-gray-600 rounded-md text-white text-sm placeholder-gray-400 focus:outline-none focus:border-blue-500"
+              className="px-4 py-3 bg-gray-50 border border-gray-600 rounded-md text-black text-sm placeholder-gray-400 focus:outline-none focus:border-blue-500"
             />
             {errors.username && (
               <span className="text-red-500 text-xs">{errors.username}</span>
@@ -105,14 +105,14 @@ const Register = () => {
 
           {/* Email */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-400">Email</label>
+            <label className="text-sm font-medium text-gray-700">Email</label>
             <input
               type="email"
               name="email"
               placeholder="Enter your email"
               value={formData.email}
               onChange={handleChange}
-              className="px-4 py-3 bg-gray-700 border border-gray-600 rounded-md text-white text-sm placeholder-gray-400 focus:outline-none focus:border-blue-500"
+              className="px-4 py-3 bg-gray-50 border border-gray-600 rounded-md text-white text-sm placeholder-gray-400 focus:outline-none focus:border-blue-500"
             />
             {errors.email && (
               <span className="text-red-500 text-xs">{errors.email}</span>
@@ -121,7 +121,7 @@ const Register = () => {
 
           {/* Password */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-400">
+            <label className="text-sm font-medium text-gray-700">
               Password
             </label>
             <input
@@ -130,7 +130,7 @@ const Register = () => {
               placeholder="Create a password (min 6 characters)"
               value={formData.password}
               onChange={handleChange}
-              className="px-4 py-3 bg-gray-700 border border-gray-600 rounded-md text-white text-sm placeholder-gray-400 focus:outline-none focus:border-blue-500"
+              className="px-4 py-3 bg-gray-50 border border-gray-600 rounded-md text-white text-sm placeholder-gray-400 focus:outline-none focus:border-blue-500"
             />
             {errors.password && (
               <span className="text-red-500 text-xs">{errors.password}</span>
@@ -139,7 +139,7 @@ const Register = () => {
 
           {/* Confirm Password */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-400">
+            <label className="text-sm font-medium text-gray-700">
               Confirm Password
             </label>
             <input
@@ -148,7 +148,7 @@ const Register = () => {
               placeholder="Confirm your password"
               value={formData.confirmPassword}
               onChange={handleChange}
-              className="px-4 py-3 bg-gray-700 border border-gray-600 rounded-md text-white text-sm placeholder-gray-400 focus:outline-none focus:border-blue-500"
+              className="px-4 py-3 bg-gray-50 border border-gray-600 rounded-md text-white text-sm placeholder-gray-400 focus:outline-none focus:border-blue-500"
             />
             {errors.confirmPassword && (
               <span className="text-red-500 text-xs">
@@ -158,7 +158,7 @@ const Register = () => {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-400">
+            <label className="text-sm font-medium text-gray-700">
               Avatar (Image URL)
             </label>
 
@@ -168,7 +168,7 @@ const Register = () => {
               placeholder="Paste your avatar image link"
               value={formData.avatar}
               onChange={handleChange}
-              className="px-4 py-3 bg-gray-700 border border-gray-600 rounded-md text-white text-sm placeholder-gray-400 focus:outline-none focus:border-blue-500"
+              className="px-4 py-3 bg-gray-50 border border-gray-600 rounded-md text-white text-sm placeholder-gray-400 focus:outline-none focus:border-blue-500"
             />
 
             {errors.avatar && (
