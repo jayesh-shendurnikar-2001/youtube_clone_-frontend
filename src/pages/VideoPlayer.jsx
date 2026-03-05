@@ -33,8 +33,6 @@ const VideoPlayer = () => {
 
   const [expanded, setExpanded] = useState(false);
 
-
-
   useEffect(() => {
     const fetchVideo = async () => {
       try {
@@ -110,7 +108,7 @@ const VideoPlayer = () => {
     );
   }
   const description = video.description || "No description available.";
-  
+
   return (
     <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_350px] gap-6 px-4 py-4">
       {/* Left Section */}
@@ -131,26 +129,37 @@ const VideoPlayer = () => {
         {/* Channel + Like */}
         <div className="flex justify-between items-center mt-4 border-b border-gray-700 pb-4 flex-wrap gap-3">
           {/* Channel */}
-          <div className="flex items-center gap-3">
-            <img
-              src={
-                video.uploader?.avatar ||
-                `https://ui-avatars.com/api/?name=${video.channel?.channelName}`
-              }
-              className="w-10 h-10 rounded-full object-cover cursor-pointer"
-              onClick={() => navigate(`/channel/${video.channel?._id}`)}
-            />
-            <div>
-              <div
-                className="text-white font-medium cursor-pointer"
+          <div className="flex items-center justify-between mt-4">
+            {/* Left Side - Channel Info */}
+            <div className="flex items-center gap-3">
+              <img
+                src={
+                  video.uploader?.avatar ||
+                  `https://ui-avatars.com/api/?name=${video.channel?.channelName}`
+                }
+                className="w-10 h-10 rounded-full object-cover cursor-pointer"
                 onClick={() => navigate(`/channel/${video.channel?._id}`)}
-              >
-                {video.channel?.channelName}
-              </div>
-              <div className="text-sm text-gray-400">
-                {video.channel?.subscribers || 0} subscribers
+                alt="channel avatar"
+              />
+
+              <div>
+                <div
+                  className="text-white font-medium cursor-pointer"
+                  onClick={() => navigate(`/channel/${video.channel?._id}`)}
+                >
+                  {video.channel?.channelName}
+                </div>
+                <div className="text-sm text-gray-400">
+                  {video.channel?.subscribers || 0} subscribers
+                </div>
               </div>
             </div>
+
+            {/* Right Side - Dummy Subscribe Button */}
+            <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 ml-4.5 
+                                 rounded-full text-sm font-medium transition">
+              Subscribe
+            </button>
           </div>
 
           {/* Like / Dislike */}
@@ -182,8 +191,6 @@ const VideoPlayer = () => {
         </div>
 
         {/* Description */}
-
-        
 
         <div className="mt-4 bg-gray-800 p-4 rounded-lg">
           <div className="text-sm font-medium text-white mb-2">

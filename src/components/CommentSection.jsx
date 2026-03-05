@@ -131,7 +131,7 @@ const CommentSection = ({ videoId }) => {
               </form>
             </div>
           ) : (
-            <div className="text-center text-gray-400 text-sm">
+            <div className="text-center text-gray-400 text-sm m-1.5">
               <Link to="/login" className="text-blue-500 hover:underline">
                 Sign in
               </Link>{" "}
