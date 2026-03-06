@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import Register from "./pages/Register";
@@ -10,7 +10,19 @@ import ChannelPage from "./pages/ChannelPage";
 import CreateEditVideo from "./pages/CreateEditVideo";
 
 function App() {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 1024);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 1024) {
+        setSidebarOpen(false);
+      } else {
+        setSidebarOpen(true);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const toggleSidebar = () => {
     setSidebarOpen((prev) => !prev);
@@ -25,9 +37,9 @@ function App() {
         <Sidebar isOpen={sidebarOpen} />
         {/* MAIN CONTENT */}
         <main
-          className={`flex-1 p-4 transition-all duration-300  min-w-0
+          className={`flex-1 p-4 transition-all duration-300 min-w-0
            ${sidebarOpen ? "lg:ml-60" : "lg:ml-16"}`}>
-            <Routes>
+          <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
@@ -35,7 +47,7 @@ function App() {
             <Route path="/channel/:id" element={<ChannelPage />} />
             <Route path="/channel/:channelId/upload" element={<CreateEditVideo />} />
             <Route path="/channel/:channelId/edit/:videoId" element={<CreateEditVideo />} />
-            </Routes>
+          </Routes>
         </main>
       </div>
     </div>
