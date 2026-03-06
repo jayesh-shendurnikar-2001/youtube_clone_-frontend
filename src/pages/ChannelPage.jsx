@@ -239,7 +239,7 @@ const ChannelPage = () => {
       <div className="h-48 w-full overflow-hidden rounded">
         <img
           src={channel.channelBanner || "https://placehold.co/1200x300"}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-center"
           alt="Channel Banner"
         />
       </div>
@@ -268,6 +268,12 @@ const ChannelPage = () => {
           )}
         </div>
 
+<button
+              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 ml-4.5 
+                                 rounded-full text-sm font-medium transition"
+            >
+              Subscribe
+            </button>
         {isOwner && (
           <div className="ml-auto flex gap-2">
             <button

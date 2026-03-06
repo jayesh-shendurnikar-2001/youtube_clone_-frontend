@@ -8,19 +8,28 @@ import {
   MdHistory,
   MdWatchLater,
   MdThumbUp,
+  MdPlaylistPlay,
+  MdSettings,
+  MdDownload,
 } from "react-icons/md";
 import { SiYoutubeshorts } from "react-icons/si";
 
 const sidebarItems = [
   { icon: <AiFillHome />, label: "Home", path: "/" },
-  { icon: <MdExplore />, label: "Explore", path: "/?category=All" },
-  { icon: <SiYoutubeshorts />, label: "Shorts", path: "/Shorts" },
-  { icon: <MdSubscriptions />, label: "Subscriptions", path: "/Subscriptions" },
+  { icon: <MdExplore />, label: "Explore",},
+  { icon: <SiYoutubeshorts />, label: "Shorts", },
+  { icon: <MdSubscriptions />, label: "Subscriptions", },
   { divider: true },
-  { icon: <MdVideoLibrary />, label: "Library", path: "/Library" },
-  { icon: <MdHistory />, label: "History", path: "/History" },
-  { icon: <MdWatchLater />, label: "Watch Later", path: "/Watch Later" },
-  { icon: <MdThumbUp />, label: "Liked Videos", path: "/Liked" },
+  { icon: <MdVideoLibrary />, label: "Library", },
+  { icon: <MdHistory />, label: "History",  },
+  { icon: <MdWatchLater />, label: "Watch Later",  },
+  { icon: <MdThumbUp />, label: "Liked Videos" },
+  { icon: <MdVideoLibrary />, label: "Your Videos" },
+  { icon: <MdHistory />, label: "History" },
+  { icon: <MdPlaylistPlay />, label: "Playlist" },
+  { divider: true },
+  { icon: <MdSettings />, label: "Settings" },
+  { icon: <MdDownload />, label: "Downloads" },
 ];
 
 const Sidebar = ({ isOpen }) => {

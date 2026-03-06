@@ -68,6 +68,14 @@ const Register = () => {
     }
   };
 
+  const password = formData.password || "";
+
+  const passwordRules = {
+    length: password.length >= 6,
+    uppercase: /[A-Z]/.test(password),
+    number: /[0-9]/.test(password),
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen p-6 mt-[-40px]">
       <div className="w-full max-w-md bg-white border border-gray-700 rounded-xl px-8 py-10 shadow-lg">
@@ -124,6 +132,34 @@ const Register = () => {
             <label className="text-sm font-medium text-gray-700">
               Password
             </label>
+
+            {/* Password rules */}
+            <div className="text-xs space-y-1 mb-1">
+              <p
+                className={
+                  passwordRules.length ? "text-green-500" : "text-gray-400"
+                }
+              >
+                {passwordRules.length ? "✔" : "•"} Minimum 6 characters
+              </p>
+
+              <p
+                className={
+                  passwordRules.uppercase ? "text-green-500" : "text-gray-400"
+                }
+              >
+                {passwordRules.uppercase ? "✔" : "•"} One uppercase letter
+              </p>
+
+              <p
+                className={
+                  passwordRules.number ? "text-green-500" : "text-gray-400"
+                }
+              >
+                {passwordRules.number ? "✔" : "•"} One number
+              </p>
+            </div>
+
             <input
               type="password"
               name="password"
@@ -132,6 +168,7 @@ const Register = () => {
               onChange={handleChange}
               className="px-4 py-3 bg-gray-50 border border-gray-600 rounded-md text-black text-sm placeholder-gray-400 focus:outline-none focus:border-blue-500"
             />
+
             {errors.password && (
               <span className="text-red-500 text-xs">{errors.password}</span>
             )}

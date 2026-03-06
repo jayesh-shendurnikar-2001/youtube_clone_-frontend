@@ -11,6 +11,8 @@ import {
   AiFillDislike,
 } from "react-icons/ai";
 import { useAuth } from "../context/authContext.jsx";
+import { FiShare2 } from "react-icons/fi";
+import { MdDownload } from "react-icons/md";
 
 const formatViews = (views) => {
   if (views >= 1000000) return (views / 1000000).toFixed(1) + "M";
@@ -133,7 +135,8 @@ const VideoPlayer = () => {
       <div>
         {/* Video */}
         <div className="aspect-video bg-black rounded-lg overflow-hidden flex items-center justify-center">
-          {video.videoUrl?.includes("youtube.com") || video.videoUrl?.includes("youtu.be") ? (
+          {video.videoUrl?.includes("youtube.com") ||
+          video.videoUrl?.includes("youtu.be") ? (
             <iframe
               src={video.videoUrl}
               title={video.title}
@@ -199,10 +202,11 @@ const VideoPlayer = () => {
             <button
               onClick={handleLike}
               disabled={likeLoading}
-              className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm ${userLiked
+              className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm ${
+                userLiked
                   ? "bg-white text-black"
                   : "bg-gray-800 text-white hover:bg-gray-700"
-                } ${likeLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+              } ${likeLoading ? "opacity-50 cursor-not-allowed" : ""}`}
             >
               {userLiked ? <AiFillLike /> : <AiOutlineLike />}
               {likes}
@@ -211,14 +215,23 @@ const VideoPlayer = () => {
             <button
               onClick={handleDislike}
               disabled={likeLoading}
-              className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm ${userDisliked
+              className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm ${
+                userDisliked
                   ? "bg-white text-black"
                   : "bg-gray-800 text-white hover:bg-gray-700"
-                } ${likeLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+              } ${likeLoading ? "opacity-50 cursor-not-allowed" : ""}`}
             >
               {userDisliked ? <AiFillDislike /> : <AiOutlineDislike />}
               {dislikes}
             </button>
+
+        <button className="flex items-center gap-2 px-4 py-2 bg-gray-800 rounded-full">
+          <FiShare2 /> 
+        </button>
+
+        <button className="flex items-center gap-2 px-4 py-2 bg-gray-800 rounded-full">
+          <MdDownload /> 
+        </button>
           </div>
         </div>
 
@@ -229,7 +242,7 @@ const VideoPlayer = () => {
             {formatViews(video.views)} views •{" "}
             {new Date(video.createdAt).toLocaleDateString()}
           </div>
-          <p className="text-sm text-gray-900 whitespace-pre-wrap">
+          <p className="text-sm text-gray-950 whitespace-pre-wrap bg-gray-200 p-2.5 rounded-2xl">
             {expanded ? description : description.slice(0, 120)}
 
             {description.length > 120 && (

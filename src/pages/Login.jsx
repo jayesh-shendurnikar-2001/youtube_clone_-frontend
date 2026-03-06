@@ -78,7 +78,7 @@ const Login = () => {
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           {/* Email */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-400">Email</label>
+            <label className="text-sm font-medium text-gray-700">Email</label>
             <input
               type="email"
               name="email"
@@ -94,7 +94,7 @@ const Login = () => {
 
           {/* Password */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-400">
+            <label className="text-sm font-medium text-gray-700">
               Password
             </label>
             <input
