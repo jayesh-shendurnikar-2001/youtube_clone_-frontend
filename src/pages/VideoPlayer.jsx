@@ -132,13 +132,25 @@ const VideoPlayer = () => {
       {/* Left Section */}
       <div>
         {/* Video */}
-        <div className="aspect-video bg-white rounded-lg overflow-hidden">
-          <iframe
-            src={video.videoUrl}
-            title={video.title}
-            allowFullScreen
-            className="w-full h-full"
-          ></iframe>
+        <div className="aspect-video bg-black rounded-lg overflow-hidden flex items-center justify-center">
+          {video.videoUrl?.includes("youtube.com") || video.videoUrl?.includes("youtu.be") ? (
+            <iframe
+              src={video.videoUrl}
+              title={video.title}
+              allowFullScreen
+              className="w-full h-full"
+            ></iframe>
+          ) : (
+            <video
+              src={video.videoUrl}
+              title={video.title}
+              controls
+              autoPlay
+              className="w-full h-full object-contain bg-black"
+            >
+              Your browser does not support the video tag.
+            </video>
+          )}
         </div>
 
         {/* Title */}
@@ -187,11 +199,10 @@ const VideoPlayer = () => {
             <button
               onClick={handleLike}
               disabled={likeLoading}
-              className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm ${
-                userLiked
+              className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm ${userLiked
                   ? "bg-white text-black"
                   : "bg-gray-800 text-white hover:bg-gray-700"
-              } ${likeLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+                } ${likeLoading ? "opacity-50 cursor-not-allowed" : ""}`}
             >
               {userLiked ? <AiFillLike /> : <AiOutlineLike />}
               {likes}
@@ -200,11 +211,10 @@ const VideoPlayer = () => {
             <button
               onClick={handleDislike}
               disabled={likeLoading}
-              className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm ${
-                userDisliked
+              className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm ${userDisliked
                   ? "bg-white text-black"
                   : "bg-gray-800 text-white hover:bg-gray-700"
-              } ${likeLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+                } ${likeLoading ? "opacity-50 cursor-not-allowed" : ""}`}
             >
               {userDisliked ? <AiFillDislike /> : <AiOutlineDislike />}
               {dislikes}

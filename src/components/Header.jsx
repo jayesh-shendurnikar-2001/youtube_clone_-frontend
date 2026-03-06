@@ -38,7 +38,7 @@ const Header = ({ onToggleSidebar }) => {
 
     <Link
       to="/"
-      className="flex items-center gap-1 font-semibold text-lg"
+      className="flex items-center gap-1 font-semibold text-lg flex-shrink-0"
     >
       <FaYoutube className="text-red-600 text-2xl" />
       <span className="hidden sm:block">YouTube</span>
@@ -46,7 +46,7 @@ const Header = ({ onToggleSidebar }) => {
   </div>
 
   {/* CENTER */}
-  <div className="flex-1 max-w-2xl mx-4">
+  <div className="flex-1 max-w-2xl mx-2 sm:mx-4 min-w-0">
     <form onSubmit={handleSearch} className="flex items-center">
 
       <input
@@ -54,8 +54,8 @@ const Header = ({ onToggleSidebar }) => {
         placeholder="Search"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        className="flex-1 px-4 py-2.5 bg-white text-black border border-gray-300 rounded-l-full focus:outline-none text-sm"
-      />
+        className="flex-1 w-full min-w-0 px-3 sm:px-4 py-2 sm:py-2.5 bg-white text-black border border-gray-300 rounded-l-full focus:outline-none text-sm"
+        />
 
       <button
         type="submit"
@@ -82,7 +82,7 @@ const Header = ({ onToggleSidebar }) => {
   </div>
 
   {/* RIGHT */}
-  <div className="relative flex items-center">
+  <div className="relative flex items-center flex-shrink-0">
     {user ? (
       <>
         <button
@@ -128,10 +128,10 @@ const Header = ({ onToggleSidebar }) => {
     ) : (
       <Link
         to="/login"
-        className="flex items-center gap-1 px-4 py-1 border border-blue-500 text-blue-500 rounded-full text-sm hover:bg-blue-50"
+        className="flex items-center justify-center gap-1 px-2 sm:px-4 py-1.5 border border-blue-500 text-blue-500 rounded-full text-sm hover:bg-blue-50 whitespace-nowrap"
       >
         <FiUser />
-        <span className="hidden sm:block">Sign in</span>
+        <span className="hidden sm:block rounded-full">Sign in</span>
       </Link>
     )}
   </div>

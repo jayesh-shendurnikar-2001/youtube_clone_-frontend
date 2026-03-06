@@ -20,12 +20,12 @@ function App() {
     <div className="flex flex-col min-h-screen bg-white text-white">
       {/* HEADER */}
       <Header onToggleSidebar={toggleSidebar} />
-      <div className="flex pt-14">
+      <div className="flex pt-14 ">
         {/* SIDEBAR */}
         <Sidebar isOpen={sidebarOpen} />
         {/* MAIN CONTENT */}
         <main
-          className={`flex-1 p-4 transition-all duration-300
+          className={`flex-1 p-4 transition-all duration-300  min-w-0
            ${sidebarOpen ? "lg:ml-60" : "lg:ml-16"}`}>
             <Routes>
             <Route path="/" element={<Home />} />
