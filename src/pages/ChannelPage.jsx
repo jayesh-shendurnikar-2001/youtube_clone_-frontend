@@ -1,6 +1,6 @@
 // src/pages/ChannelPage.jsx
 import { useState, useEffect } from "react";
-import { useParams, useNavigate,} from "react-router-dom";
+import { useParams, useNavigate, } from "react-router-dom";
 import API from "../api/api.js";
 import VideoCard from "../components/VideoCard.jsx";
 import { FiUpload } from "react-icons/fi";
@@ -95,7 +95,7 @@ const ChannelPage = () => {
     try {
       await API.put(`/channels/edit-channel/${channel._id}`, editChannelForm);
 
-   
+
       setChannel((prev) => ({
         ...prev,
         channelName: editChannelForm.channelName,
@@ -247,12 +247,19 @@ const ChannelPage = () => {
       {/* Channel Header */}
       <div className="flex items-center gap-4 mt-6 border-b pb-4">
         <img
-          className="w-20 h-20 rounded-full"
-          src={`${channel.owner?.avatar}`}
+          className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover bg-gray-200 flex-shrink-0"
+          src={
+            channel.owner?.avatar ||
+            `https://ui-avatars.com/api/?name=${channel.channelName || "C"}&background=random&color=fff&size=128`
+          }
+          alt={channel.channelName}
+          onError={(e) => {
+            e.target.src = "https://ui-avatars.com/api/?name=C&background=333&color=fff&size=128";
+          }}
         />
 
         <div>
-          <h1 className="text-2xl font-bold">{channel.channelName}</h1>
+          <h1 className="text-2xl font-bold text-black">{channel.channelName}</h1>
           <p className="text-gray-700 text-sm">
             {channel.subscribers} subscribers • {channel.videos?.length} videos
           </p>
@@ -389,7 +396,7 @@ const ChannelPage = () => {
                 </div>
               )}
 
-              <VideoCard video={video} />
+              <VideoCard video={video} channelContext={channel} />
             </div>
           ))}
         </div>

@@ -17,20 +17,17 @@ const formatTimeAgo = (dateStr) => {
   if (diffDays < 7)
     return `${diffDays} day${diffDays > 1 ? "s" : ""} ago`;
   if (diffDays < 30)
-    return `${Math.floor(diffDays / 7)} week${
-      Math.floor(diffDays / 7) > 1 ? "s" : ""
-    } ago`;
+    return `${Math.floor(diffDays / 7)} week${Math.floor(diffDays / 7) > 1 ? "s" : ""
+      } ago`;
   if (diffDays < 365)
-    return `${Math.floor(diffDays / 30)} month${
-      Math.floor(diffDays / 30) > 1 ? "s" : ""
-    } ago`;
+    return `${Math.floor(diffDays / 30)} month${Math.floor(diffDays / 30) > 1 ? "s" : ""
+      } ago`;
 
-  return `${Math.floor(diffDays / 365)} year${
-    Math.floor(diffDays / 365) > 1 ? "s" : ""
-  } ago`;
+  return `${Math.floor(diffDays / 365)} year${Math.floor(diffDays / 365) > 1 ? "s" : ""
+    } ago`;
 };
 
-const VideoCard = ({ video }) => {
+const VideoCard = ({ video, channelContext }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -70,11 +67,13 @@ const VideoCard = ({ video }) => {
           className="w-9 h-9 rounded-full flex-shrink-0 object-cover bg-white"
           src={
             video.uploader?.avatar ||
-            `https://ui-avatars.com/api/?name=${
-              video.channel?.channelName || "C"
-            }&background=FF0000&color=fff&size=64`
+            video.channel?.owner?.avatar ||
+            channelContext?.owner?.avatar ||
+            channelContext?.avatar ||
+            `https://ui-avatars.com/api/?name=${video.channel?.channelName || channelContext?.channelName || "C"
+            }&background=random&color=fff&size=64`
           }
-          alt={video.channel?.channelName}
+          alt={video.channel?.channelName || channelContext?.channelName}
           onError={(e) => {
             e.target.src =
               "https://ui-avatars.com/api/?name=C&background=333&color=fff&size=64";
