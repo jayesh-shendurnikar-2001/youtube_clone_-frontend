@@ -26,6 +26,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('userInfo');
     };
 
+    // update user data
     const updateUser = (updatedData) => {
         const stored = JSON.parse(localStorage.getItem('userInfo')) || {};
         const merged = { ...stored, ...updatedData };

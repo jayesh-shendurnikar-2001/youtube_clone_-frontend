@@ -1,6 +1,6 @@
 // src/pages/ChannelPage.jsx
 import { useState, useEffect } from "react";
-import { useParams, useNavigate, } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import API from "../api/api.js";
 import VideoCard from "../components/VideoCard.jsx";
 import { FiUpload } from "react-icons/fi";
@@ -8,34 +8,48 @@ import { useAuth } from "../context/authContext.jsx";
 import Swal from "sweetalert2";
 
 const ChannelPage = () => {
+  // Get channel id from URL ( /channel/:id )
   const { id } = useParams();
+  // Used for page navigation
   const navigate = useNavigate();
+  // Get logged-in user from Auth Context
   const { user, updateUser } = useAuth();
-
+  // Store channel data
   const [channel, setChannel] = useState(null);
   const [loading, setLoading] = useState(true);
+  // Check if logged-in user is the owner of the channel
   const [isOwner, setIsOwner] = useState(false);
 
+  // Show create channel form
   const [showCreateForm, setShowCreateForm] = useState(false);
+
+  // Show edit channel form
   const [showEditForm, setShowEditForm] = useState(false);
 
+  // Form state for creating a new channel
   const [channelForm, setChannelForm] = useState({
     channelName: "",
     description: "",
     channelBanner: "",
   });
 
+  // Form state for editing an existing channel
   const [editChannelForm, setEditChannelForm] = useState({
     channelName: "",
     description: "",
     channelBanner: "",
   });
 
+  // Error message for form
   const [formError, setFormError] = useState("");
+
+  // Store video id that is currently being deleted
   const [deletingVideoId, setDeletingVideoId] = useState(null);
 
+    // Runs when component loads OR id/user changes
   useEffect(() => {
     const fetchChannel = async () => {
+            // If route is /channel/create -> show create form
       if (id === "create") {
         setShowCreateForm(true);
         setLoading(false);
@@ -47,11 +61,11 @@ const ChannelPage = () => {
 
       try {
         setLoading(true);
-
+        // Call backend API to get channel details
         const { data } = await API.get(`/channels/${id}`);
 
         setChannel(data);
-
+        // Check if current user is the owner of the channel
         if (user && data.owner) {
           const ownerId = data.owner._id || data.owner;
           setIsOwner(ownerId.toString() === user._id.toString());
@@ -66,11 +80,13 @@ const ChannelPage = () => {
     fetchChannel();
   }, [id, user]);
 
+    // Handle channel creation
   const handleCreateChannel = async (e) => {
     e.preventDefault();
     setFormError("");
 
     try {
+            // Send create request to backend
       const res = await API.post("/channels", channelForm);
       const channel = res.data;
 
@@ -89,12 +105,11 @@ const ChannelPage = () => {
 
   const handleUpdateChannel = async (e) => {
     e.preventDefault();
-
+    // Prevent update if channel not loaded
     if (!channel) return;
 
     try {
       await API.put(`/channels/edit-channel/${channel._id}`, editChannelForm);
-
 
       setChannel((prev) => ({
         ...prev,
@@ -122,9 +137,10 @@ const ChannelPage = () => {
     }
   };
 
+  // Handle deleting a video from the channel
   const handleDeleteVideo = async (videoId) => {
     if (deletingVideoId) return;
-
+    // Show confirmation popup
     const result = await Swal.fire({
       title: "Delete video?",
       text: "This video will be permanently deleted.",
@@ -180,7 +196,9 @@ const ChannelPage = () => {
   if (showCreateForm || id === "create") {
     return (
       <div className="max-w-md mx-auto mt-10 border-2 border-black p-5.5 rounded-4xl ">
-        <h2 className="text-xl font-semibold mb-4 text-black">Create Channel</h2>
+        <h2 className="text-xl font-semibold mb-4 text-black">
+          Create Channel
+        </h2>
 
         {formError && (
           <div className="bg-red-100 text-red-600 p-2 rounded mb-3">
@@ -230,75 +248,82 @@ const ChannelPage = () => {
   }
 
   if (!channel) {
-    return <div className="text-center mt-10 text-black">Channel not found</div>;
+    return (
+      <div className="text-center mt-10 text-black">Channel not found</div>
+    );
   }
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
       {/* Banner */}
       <div className="h-48 w-full overflow-hidden rounded">
         <img
           src={channel.channelBanner || "https://placehold.co/1200x300"}
-          className="w-full h-full object-center"
+          className="w-full h-full object-cover"
           alt="Channel Banner"
         />
       </div>
 
       {/* Channel Header */}
-      <div className="flex items-center gap-4 mt-6 border-b pb-4">
+      <div className="flex flex-col md:flex-row items-center md:items-start text-center md:text-left gap-4 md:gap-6 mt-6 border-b pb-6">
         <img
-          className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover bg-gray-200 flex-shrink-0"
+          className="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover bg-gray-200 flex-shrink-0"
           src={
             channel.owner?.avatar ||
-            `https://ui-avatars.com/api/?name=${channel.channelName || "C"}&background=random&color=fff&size=128`
+            `https://ui-avatars.com/api/?name=${
+              channel.channelName || "C"
+            }&background=random&color=fff&size=128`
           }
           alt={channel.channelName}
           onError={(e) => {
-            e.target.src = "https://ui-avatars.com/api/?name=C&background=333&color=fff&size=128";
+            e.target.src =
+              "https://ui-avatars.com/api/?name=C&background=333&color=fff&size=128";
           }}
         />
 
-        <div>
-          <h1 className="text-2xl font-bold text-black">{channel.channelName}</h1>
-          <p className="text-gray-700 text-sm">
+        <div className="flex-1">
+          <h1 className="text-2xl font-bold text-black">
+            {channel.channelName}
+          </h1>
+          <p className="text-gray-700 text-sm mt-1">
             {channel.subscribers} subscribers • {channel.videos?.length} videos
           </p>
           {channel.description && (
-            <p className="text-gray-700 text-sm mt-1">{channel.description}</p>
+            <p className="text-gray-700 text-sm mt-2">{channel.description}</p>
           )}
         </div>
 
-<button
-              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 ml-4.5 
-                                 rounded-full text-sm font-medium transition"
-            >
-              Subscribe
-            </button>
-        {isOwner && (
-          <div className="ml-auto flex gap-2">
-            <button
-              onClick={() => navigate(`/channel/${channel._id}/upload`)}
-              className="flex items-center gap-2 bg-red-500 px-4 py-2 rounded hover:bg-red-600"
-            >
-              <FiUpload />
-              Upload
-            </button>
+        <div className="flex flex-wrap justify-center md:justify-end gap-3 w-full md:w-auto md:ml-auto mt-2 md:mt-0">
+          <button className="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full text-sm font-medium transition">
+            Subscribe
+          </button>
 
-            <button
-              onClick={() => {
-                setEditChannelForm({
-                  channelName: channel.channelName || "",
-                  description: channel.description || "",
-                  channelBanner: channel.channelBanner || "",
-                });
-                setShowEditForm(true);
-              }}
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-            >
-              Edit Channel
-            </button>
-          </div>
-        )}
+          {isOwner && (
+            <>
+              <button
+                onClick={() => navigate(`/channel/${channel._id}/upload`)}
+                className="flex items-center gap-2 bg-red-500 text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-red-600 transition"
+              >
+                <FiUpload />
+                Upload
+              </button>
+
+              <button
+                onClick={() => {
+                  setEditChannelForm({
+                    channelName: channel.channelName || "",
+                    description: channel.description || "",
+                    channelBanner: channel.channelBanner || "",
+                  });
+                  setShowEditForm(true);
+                }}
+                className="bg-blue-500 text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-blue-600 transition"
+              >
+                Edit Channel
+              </button>
+            </>
+          )}
+        </div>
       </div>
 
       {/* Edit Channel Form */}

@@ -1,21 +1,29 @@
 // src/components/VideoCard.jsx
+// Import navigation hook from React Router
+// Used to navigate to video or channel page
 import { useNavigate } from "react-router-dom";
 
+// Function to format view count like YouTube
+// Example: 1500 -> 1.5K, 2000000 -> 2.0M
 const formatViews = (views) => {
   if (views >= 1000000) return (views / 1000000).toFixed(1) + "M";
   if (views >= 1000) return (views / 1000).toFixed(1) + "K";
   return views.toString();
 };
 
+// Function to convert date into "time ago" format
+// Example: Today, 2 days ago, 1 week ago
 const formatTimeAgo = (dateStr) => {
   const now = new Date();
   const date = new Date(dateStr);
-  const diffMs = now - date;
-  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  const diffMs = now - date; // difference in milliseconds
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24)); // convert to days
 
   if (diffDays < 1) return "Today";
+    // less than 7 days
   if (diffDays < 7)
     return `${diffDays} day${diffDays > 1 ? "s" : ""} ago`;
+    // less than 30 days and similar
   if (diffDays < 30)
     return `${Math.floor(diffDays / 7)} week${Math.floor(diffDays / 7) > 1 ? "s" : ""
       } ago`;
@@ -27,13 +35,19 @@ const formatTimeAgo = (dateStr) => {
     } ago`;
 };
 
+// VideoCard component
+// video -> video data object
+// channelContext -> fallback channel data when video channel not populated
 const VideoCard = ({ video, channelContext }) => {
   const navigate = useNavigate();
 
+  // on click going to video/video_Id api
   const handleClick = () => {
     navigate(`/video/${video._id}`);
   };
 
+  // Navigate to channel page when channel name is clicked
+  // stopPropagation prevents triggering video click
   const handleChannelClick = (e) => {
     e.stopPropagation();
     if (video.channel?._id) {
@@ -42,6 +56,7 @@ const VideoCard = ({ video, channelContext }) => {
   };
 
   return (
+      // Whole card clickable
     <div
       className="cursor-pointer rounded-lg overflow-hidden transition-transform duration-200 hover:-translate-y-1 group text-black"
       onClick={handleClick}
@@ -51,6 +66,7 @@ const VideoCard = ({ video, channelContext }) => {
         <img
           src={video.thumbnailUrl}
           alt={video.title}
+          // Lazy loading improves performance
           loading="lazy"
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           onError={(e) => {
@@ -74,6 +90,7 @@ const VideoCard = ({ video, channelContext }) => {
             }&background=random&color=fff&size=64`
           }
           alt={video.channel?.channelName || channelContext?.channelName}
+                    // Fallback thumbnail if image fails
           onError={(e) => {
             e.target.src =
               "https://ui-avatars.com/api/?name=C&background=333&color=fff&size=64";

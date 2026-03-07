@@ -15,12 +15,14 @@ const categories = [
     'Comedy',
 ];
 
+// create video and edit
 const CreateEditVideo = () => {
     const { channelId, videoId } = useParams();
     const navigate = useNavigate();
     const { user } = useAuth();
     const isEditing = Boolean(videoId);
 
+    // set all data in state
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -37,6 +39,7 @@ const CreateEditVideo = () => {
             const fetchVideo = async () => {
                 try {
                     const { data } = await API.get(`/videos/${videoId}`);
+                    // inputs fields data coming from backend
                     setFormData({
                         title: data.title,
                         description: data.description || '',

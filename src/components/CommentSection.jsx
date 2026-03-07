@@ -5,11 +5,14 @@ import API from "../api/api.js";
 import { useAuth } from "../context/authContext.jsx";
 import Swal from "sweetalert2";
 
-// Format relative time
+// Function to convert a date into a time.
+// Example: "2 min ago", "3 days ago"
+
 const timeAgo = (dateStr) => {
-  const now = new Date();
-  const date = new Date(dateStr);
-  const diff = Math.floor((now - date) / 1000);
+  const now = new Date(); // current date and time
+  const date = new Date(dateStr); // convert input string to Date object
+  const diff = Math.floor((now - date) / 1000);   // Calculate difference in seconds
+
   if (diff < 60) return "Just now";
   if (diff < 3600) return `${Math.floor(diff / 60)} min ago`;
   if (diff < 86400) return `${Math.floor(diff / 3600)} hours ago`;
@@ -17,6 +20,8 @@ const timeAgo = (dateStr) => {
   return `${Math.floor(diff / 2592000)} months ago`;
 };
 
+// CommentSection Component
+// This component handles displaying, adding, editing, and deleting comments
 const CommentSection = ({ videoId }) => {
   const { user } = useAuth();
   const [comments, setComments] = useState([]);
@@ -26,11 +31,14 @@ const CommentSection = ({ videoId }) => {
   const [loading, setLoading] = useState(true);
   const [commentLoading, setCommentLoading] = useState(false);
   const [editLoading, setEditLoading] = useState(false);
+
   // Fetch comments
   useEffect(() => {
     const fetchComments = async () => {
       try {
+        
         setLoading(true);
+        // Call backend API to get comments for this video
         const { data } = await API.get(`/comments/${videoId}`);
         setComments(data);
       } catch (err) {
@@ -39,12 +47,14 @@ const CommentSection = ({ videoId }) => {
         setLoading(false);
       }
     };
+        // Only fetch if videoId exists
     if (videoId) fetchComments();
   }, [videoId]);
 
   // Add comment
   const handleAddComment = async (e) => {
     e.preventDefault();
+    // Prevent empty comments
     if (!newComment.trim()) return;
 
     try {
@@ -53,12 +63,13 @@ const CommentSection = ({ videoId }) => {
       const { data } = await API.post(`/comments/${videoId}`, {
         text: newComment,
       });
-
+      // Add new comment at the top of list
       setComments([data, ...comments]);
+      // Clear input field
       setNewComment("");
     } catch (err) {
       const message = err.response?.data?.message || "Failed to add comment";
-
+      // Show error popup
       Swal.fire({
         icon: "error",
         title: "Error",
@@ -76,11 +87,11 @@ const CommentSection = ({ videoId }) => {
 
     try {
       setEditLoading(true);
-
+      // Send updated text to backend
       const { data } = await API.put(`/comments/${commentId}`, {
         text: editText,
       });
-
+      // Update comment in UI
       setComments(comments.map((c) => (c._id === commentId ? data : c)));
 
       setEditingId(null);
@@ -103,7 +114,7 @@ const CommentSection = ({ videoId }) => {
 
   // Delete comment
   const handleDeleteComment = async (commentId) => {
-
+    // Show confirmation dialog
     const result = await Swal.fire({
       title: "Delete comment?",
       text: "This action cannot be undone.",
@@ -117,8 +128,9 @@ const CommentSection = ({ videoId }) => {
     if (!result.isConfirmed) return;
   
     try {
+      // delete api call
       await API.delete(`/comments/${commentId}`);
-  
+      // Remove deleted comment from UI
       setComments(comments.filter((c) => c._id !== commentId));
   
       Swal.fire({
@@ -147,7 +159,9 @@ const CommentSection = ({ videoId }) => {
 
   // Start editing
   const startEditing = (comment) => {
+    // Set the comment ID being edited
     setEditingId(comment._id);
+    // Pre-fill edit input with existing comment text
     setEditText(comment.text);
   };
 
