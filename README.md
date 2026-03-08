@@ -1,16 +1,174 @@
-# React + Vite
+# YouTube Clone - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📌 Project Overview
 
-Currently, two official plugins are available:
+This is the **frontend of a YouTube Clone application** built using **React.js and Vite**.
+The application allows users to register, login, create channels, upload videos, watch videos, comment, and explore other channels similar to YouTube.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 🚀 Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* User Authentication (Login / Register)
+* Create and Edit Channels
+* Upload Videos
+* Watch Videos
+* Comment on Videos
+* Filter Videos
+* Responsive Header and Sidebar
+* Video Cards with Views and Upload Time
+* Error Handling Pages
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠️ Tech Stack
+
+* React.js
+* Vite
+* JavaScript (ES6)
+* React Router DOM
+* Context API (Authentication)
+* Axios (API Calls)
+* Tailwind CSS / CSS
+
+---
+
+## 📂 Project Structure
+
+```
+src
+│
+├── api
+│   └── api.js              # Axios API configuration
+│
+├── components
+│   ├── CommentSection.jsx
+│   ├── FilterButtons.jsx
+│   ├── Header.jsx
+│   ├── Sidebar.jsx
+│   └── VideoCard.jsx
+│
+├── context
+│   └── authContext.jsx     # Authentication Context
+│
+├── pages
+│   ├── ChannelPage.jsx
+│   ├── CreateEditVideo.jsx
+│   ├── ErrorPage.jsx
+│   ├── Home.jsx
+│   ├── Login.jsx
+│   ├── Register.jsx
+│   └── VideoPlayer.jsx
+│
+├── App.jsx
+├── main.jsx
+└── index.css
+```
+
+---
+
+🔗 Backend Repository
+
+This frontend works with the following backend API:
+
+Backend GitHub Repository:
+https://github.com/jayesh-shendurnikar-2001/youtube_clone_backend
+
+Make sure the backend server is running before starting the frontend.
+
+## ⚙️ Installation
+
+### 1️⃣ Clone the repository
+
+```bash
+git clone https://github.com/jayesh-shendurnikar-2001/youtube_clone_-frontend.git
+```
+
+### 2️⃣ Navigate to project
+
+```bash
+cd youtube-clone-frontend
+```
+
+### 3️⃣ Install dependencies
+
+```bash
+npm install
+```
+
+### 4️⃣ Run the development server
+
+```bash
+npm run dev
+```
+
+Application will run at:
+
+```
+http://localhost:5173
+```
+
+---
+
+## 🌐 API Configuration
+
+API base URL is configured in:
+
+```
+src/api/api.js
+```
+
+Example:
+
+```javascript
+import axios from "axios";
+
+const API = axios.create({
+  baseURL: "http://localhost:5000/api"
+});
+
+export default API;
+```
+
+Make sure the **backend server is running** before using the application.
+
+---
+
+## 📸 Main Pages
+
+| Page              | Description              |
+| ----------------- | ------------------------ |
+| Home              | Displays all videos      |
+| Login             | User login page          |
+| Register          | User registration        |
+| Channel Page      | Shows channel details    |
+| Video Player      | Watch video and comments |
+| Create/Edit Video | Upload or update videos  |
+
+---
+
+## 📱 Responsive Design
+
+The application supports:
+
+* Desktop
+* Tablet
+* Mobile devices
+
+---
+
+## 🔮 Future Improvements
+
+* Video likes and dislikes
+* Video subscriptions
+* Notifications
+* Video search
+* Dark mode
+
+---
+
+## 👨‍💻 Author
+
+Developed by **Jayesh Shendurnikar**
+
+---

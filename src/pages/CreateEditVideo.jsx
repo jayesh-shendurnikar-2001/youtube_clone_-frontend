@@ -215,7 +215,7 @@ const CreateEditVideo = () => {
       <button
         type="button"
         onClick={() => navigate(`/channel/${channelId}`)}
-        className="px-6 py-3 rounded text-white hover:bg-gray-700"
+        className="px-6 py-3 rounded text-black hover:bg-gray-300 "
       >
         Cancel
       </button>
