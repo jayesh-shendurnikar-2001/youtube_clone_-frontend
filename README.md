@@ -157,13 +157,6 @@ The application supports:
 
 ---
 
-## 🔮 Future Improvements
-
-* Video likes and dislikes
-* Video subscriptions
-* Notifications
-* Video search
-* Dark mode
 
 ---
 
