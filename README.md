@@ -157,9 +157,6 @@ The application supports:
 
 ---
 
-
----
-
 ## 👨‍💻 Author
 
 Developed by **Jayesh Shendurnikar**
